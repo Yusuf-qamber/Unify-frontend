@@ -1,0 +1,208 @@
+.event-details {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+
+  .event-card {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    text-align: center;
+
+    .title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .meta {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 1.5rem;
+
+      span {
+        display: block;
+        margin-bottom: 0.3rem;
+      }
+    }
+
+    .description,
+    .location {
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .map-wrap {
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+
+      .btn {
+        padding: 0.6rem 1.5rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        border: none;
+
+        &.edit {
+          background: #0077cc;
+          color: #fff;
+          &:hover {
+            background: #005fa3;
+          }
+        }
+
+        &.delete {
+          background: #e74c3c;
+          color: #fff;
+          &:hover {
+            background: #c0392b;
+          }
+        }
+      }
+    }
+
+    .back-link-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+
+    .back-link-btn {
+      font-size: 1rem;
+      background: #0077cc;
+      color: #fff;
+      padding: 0.5rem 1.2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.3s ease;
+
+      &:hover {
+        background: #005fa3;
+      }
+    }
+  }
+
+  .comments-section {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    .section-title {
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .muted,
+    .no-comments {
+      color: #888;
+      font-style: italic;
+      padding: 0.5rem 0;
+      text-align: center;
+    }
+
+    .comments-list {
+      margin-top: 1rem;
+
+      .comment {
+        background: #f9f9f9;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        position: relative;
+
+        .author {
+          font-size: 0.9rem;
+          color: #666;
+          margin-bottom: 0.5rem;
+          text-align: left;
+        }
+
+        .text {
+          font-size: 1rem;
+          margin-bottom: 0.5rem;
+          text-align: left;
+        }
+
+        .edit-block {
+          textarea {
+            width: 100%;
+            padding: 0.6rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-bottom: 0.6rem;
+          }
+
+          .edit-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+
+            .btn {
+              padding: 0.4rem 1rem;
+              border: none;
+              border-radius: 6px;
+              cursor: pointer;
+
+              &.save {
+                background: #28a745;
+                color: #fff;
+                &:hover {
+                  background: #218838;
+                }
+              }
+
+              &.cancel {
+                background: #ccc;
+                color: #333;
+                &:hover {
+                  background: #aaa;
+                }
+              }
+            }
+          }
+        }
+
+        .row-actions {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          display: flex;
+          gap: 0.5rem;
+
+          .icon-btn {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            color: #0077cc;
+            transition: color 0.2s ease;
+
+            &:hover {
+              color: #005fa3;
+            }
+
+            &.danger {
+              color: #e74c3c;
+              &:hover {
+                color: #c0392b;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

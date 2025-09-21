@@ -1,0 +1,220 @@
+.college-page {
+  min-height: 100vh;
+  padding: var(--space-20) var(--space-4) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.college-title {
+  font-size: 3.5rem;
+  font-weight: var(--font-bold);
+  color: white;
+  text-align: center;
+  margin-bottom: var(--space-16);
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  animation: fadeInUp 0.8s ease-out;
+  letter-spacing: 0.02em;
+
+  @media (max-width: 768px) {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-12);
+  }
+
+  @media (max-width: 480px) {
+    font-size: 2rem;
+    margin-bottom: var(--space-8);
+  }
+}
+
+.college-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: var(--space-8);
+  max-width: 800px;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    max-width: 500px;
+  }
+
+  @media (max-width: 480px) {
+    gap: var(--space-4);
+  }
+}
+
+.college-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-xl);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-decoration: none;
+  color: var(--gray-800);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.8s ease-out;
+  animation-fill-mode: both;
+
+  &:nth-child(1) {
+    animation-delay: 0.2s;
+  }
+
+  &:nth-child(2) {
+    animation-delay: 0.4s;
+  }
+
+
+  &:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  
+
+
+
+    .college-card__content {
+      h2 {
+        transform: translateY(-4px);
+      }
+
+      p {
+        transform: translateY(-2px);
+      }
+    }
+  }
+
+  &:active {
+    transform: translateY(-4px) scale(1.01);
+  }
+
+  @media (max-width: 480px) {
+    &:hover {
+      transform: translateY(-4px) scale(1.01);
+    }
+  }
+}
+
+.college-card__content {
+  padding: var(--space-12) var(--space-8);
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h2 {
+    font-size: 2rem;
+    font-weight: var(--font-bold);
+    margin-bottom: var(--space-6);
+    transition: all var(--transition-normal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+  }
+
+  p {
+    font-size: var(--text-lg);
+    line-height: 1.6;
+    opacity: 0.9;
+    transition: all var(--transition-normal);
+    max-width: 280px;
+  }
+
+  @media (max-width: 768px) {
+    padding: var(--space-10) var(--space-6);
+    min-height: 180px;
+
+    h2 {
+      font-size: 1.75rem;
+      margin-bottom: var(--space-4);
+    }
+
+    p {
+      font-size: var(--text-base);
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: var(--space-8) var(--space-4);
+    min-height: 160px;
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: var(--space-3);
+    }
+
+    p {
+      font-size: var(--text-sm);
+    }
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.college-card {
+
+  &:focus {
+    outline: none;
+    animation: pulse 1s infinite;
+  }
+
+  &.loading {
+    pointer-events: none;
+    opacity: 0.7;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      margin: -10px 0 0 -10px;
+      border: 2px solid var(--primary-500);
+      border-top: 2px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      z-index: 2;
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: var(--shadow-xl);
+  }
+  50% {
+    box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.3);
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.college-page {
+  min-height: 100vh;
+  padding: var(--space-12) var(--space-4) var(--space-8); 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; 
+}

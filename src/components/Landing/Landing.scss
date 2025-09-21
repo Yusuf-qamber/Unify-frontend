@@ -1,0 +1,124 @@
+.college-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 4rem auto 0; 
+}
+
+.college-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  min-height: 180px;
+  text-decoration: none;
+  color: #111;
+  transition: all 0.3s ease;
+  
+  border: 2px solid;
+  border-image: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3)) 1;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 50%;
+    top: 10%;
+    left: 15%;
+    animation: floatShapes 6s linear infinite;
+  }
+
+  &::after {
+    width: 20px;
+    height: 20px;
+    background: rgba(118, 75, 162, 0.1);
+    border-radius: 0;
+    top: 70%;
+    left: 70%;
+    animation-delay: 3s;
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    border-image: linear-gradient(135deg, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8)) 1;
+    box-shadow: 0 15px 30px rgba(102, 126, 234, 0.2);
+  }
+
+  .icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    z-index: 2;
+  }
+
+  .label {
+    font-size: 1.2rem;
+    font-weight: 600;
+    z-index: 2;
+  }
+}
+
+@keyframes floatShapes {
+  0%, 100% { transform: translate(0,0) rotate(0deg); }
+  50% { transform: translate(10px, -10px) rotate(45deg); }
+}
+
+.college-card-wrapper {
+  position: relative;
+  animation: fadeInScale 0.8s ease-out forwards;
+
+  &:nth-child(1) { animation-delay: 0.2s; }
+  &:nth-child(2) { animation-delay: 0.3s; }
+  &:nth-child(3) { animation-delay: 0.4s; }
+  &:nth-child(4) { animation-delay: 0.5s; }
+  &:nth-child(5) { animation-delay: 0.6s; }
+  &:nth-child(6) { animation-delay: 0.7s; }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 1024px) {
+  .college-container {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    padding: 0 2rem; 
+  }
+}
+
+@media (max-width: 768px) {
+  .college-container {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 0 2rem; 
+  }
+}
+
+@media (max-width: 480px) {
+  .college-container {
+    grid-template-columns: 1fr; 
+    gap: 1rem;
+    padding: 0 1.5rem; 
+    margin: 2rem auto 0;
+  }
+
+  .college-card {
+    min-height: 150px;
+    padding: 1.2rem;
+  }
+}
