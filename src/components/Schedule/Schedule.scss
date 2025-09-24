@@ -1,0 +1,108 @@
+// Variables
+$primary: #3F72AF;
+$primary-dark: #2a4f7d;
+$secondary: #112D4E;
+$light-bg: #F9F7F7;
+$border: #ddd;
+$shadow: rgba(0, 0, 0, 0.1);
+$radius: 6px;
+
+// Shared button
+.button {
+  padding: 0.6rem 1rem;
+  border-radius: $radius;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.3s ease;
+
+  &.primary {
+    background: $primary;
+    color: #fff;
+
+    &:hover {
+      background: $primary-dark;
+    }
+  }
+}
+
+// Shared card
+.card {
+  background: #fff;
+  border: 1px solid $border;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px $shadow;
+}
+
+// Schedule container
+.schedule-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  h2, .schedule-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: $secondary;
+  }
+
+  .add-course-wrapper {
+    text-align: center;
+    margin-bottom: 1.5rem;
+
+    .add-course-link {
+      @extend .button;
+      @extend .primary;
+      font-weight: 600;
+    }
+  }
+
+  .schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.2rem;
+
+    .day-column {
+      background: $light-bg;
+      border: 1px solid $border;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+
+      h3 {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: $primary;
+        margin-bottom: 0.8rem;
+      }
+
+      .course-card {
+        @extend .card;
+
+        .course-content {
+          text-align: center;
+          font-size: 0.95rem;
+          line-height: 1.5;
+
+          strong {
+            display: block;
+            font-size: 1rem;
+            margin-bottom: 0.4rem;
+          }
+        }
+
+        .edit-btn-wrapper {
+          margin-top: 0.6rem;
+
+          .edit-btn {
+            @extend .button;
+            @extend .primary;
+            font-size: 0.9rem;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,119 @@
+// Variables
+$primary: #3F72AF;
+$primary-dark: #2a4f7d;
+$danger: #d9534f;
+$danger-dark: #c9302c;
+$secondary: #112D4E;
+$light-bg: #F9F7F7;
+$border: #ddd;
+$radius: 6px;
+$shadow: rgba(0, 0, 0, 0.08);
+
+// Shared button
+.button {
+  padding: 0.7rem;
+  border-radius: $radius;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.3s ease;
+
+  &.primary {
+    background: $primary;
+    color: #fff;
+
+    &:hover {
+      background: $primary-dark;
+    }
+  }
+
+  &.danger {
+    background: $danger;
+    color: #fff;
+
+    &:hover {
+      background: $danger-dark;
+    }
+  }
+}
+
+// Shared input/select
+.input, select {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: $radius;
+  font-size: 1rem;
+  width: 100%;
+}
+
+// Shared label
+.label {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  display: inline-block;
+  color: $secondary;
+}
+
+// Form container
+.form-container, .schedule-form {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: $light-bg;
+  border: 1px solid $border;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px $shadow;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  label {
+    @extend .label;
+  }
+
+  input, select {
+    @extend .input;
+  }
+
+  .days-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.95rem;
+      font-weight: normal;
+    }
+  }
+
+  button {
+    @extend .button;
+
+    &:first-of-type {
+      @extend .primary;
+    }
+
+    &.delete-btn {
+      @extend .danger;
+    }
+  }
+}
+// Material UI Confirm Popup Styling
+.MuiDialog-paper {
+  border-radius: 12px !important;
+  padding: 1rem !important;
+}
+
+.MuiButton-containedError {
+  border-radius: 8px !important;
+  min-width: 100px;
+}
+
+.MuiButton-outlinedPrimary {
+  border-radius: 8px !important;
+  min-width: 100px;
+}
