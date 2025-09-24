@@ -15,6 +15,9 @@ import EventList from "./components/EventList/EventList.jsx";
 import * as eventServics from "./services/eventServics.js";
 import EventDetails from "./components/EventDetails/EventDetails.jsx";
 import EventForm from "./components/EventForm/EventForm.jsx";
+import Schedule from "./components/Schedule/Schedule";
+import ScheduleForm from "./components/ScheduleForm/ScheduleForm";
+import { ConfirmProvider } from "material-ui-confirm";
 
 const App = () => {
   const navigate = useNavigate();
@@ -72,6 +75,7 @@ const App = () => {
   };
 
   return (
+    
     <>
       <NavBar user={user} handleSignOut={handleSignOut} />
       <Routes>
@@ -116,6 +120,13 @@ const App = () => {
               path="/:college/events/:eventId/edit"
               element={<EventForm handleUpdateEvent={handleUpdateEvent} />}
             />
+            <Route path="/schedule" element={<Schedule user={user} />} />
+{user && (
+  <>
+    <Route path="/schedule/new" element={<ScheduleForm />} />
+    <Route path="/schedule/:courseId/edit" element={<ScheduleForm />} />
+  </>
+)}
           </>
         ) : (
           
@@ -123,6 +134,7 @@ const App = () => {
         )}
       </Routes>
     </>
+    
   );
 };
 
