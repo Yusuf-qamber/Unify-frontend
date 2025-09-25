@@ -34,7 +34,7 @@
       padding: 0.75rem;
       border: none;
       border-radius: 0.5rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.25rem;
       outline: none;
       background: rgba(255, 255, 255, 0.2);
       color: #fff;
@@ -58,6 +58,7 @@
       border-radius: 0.5rem;
       cursor: pointer;
       transition: opacity 0.3s ease;
+      margin-top: 1rem;
 
       &:hover {
         opacity: 0.85;
@@ -70,11 +71,21 @@
       }
     }
 
-    .error {
-      color: #ffcccc;
-      font-size: 0.9rem;
+    .error-box {
+      background: rgba(255, 0, 0, 0.15);
+      border-left: 4px solid crimson;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
       margin-bottom: 1rem;
-      text-align: center;
+      font-size: 0.9rem;
+      color: #ffcccc;
+      text-align: left;
+    }
+
+    .field-error {
+      color: #ffb3b3;
+      font-size: 0.8rem;
+      margin: 0 0 0.5rem 0;
     }
 
     .toggle-text {
@@ -104,5 +115,39 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+.password-rules {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  color: #f0f0f0;
+
+  h4 {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    color: #ffd369;
+  }
+
+  ul {
+    list-style: none;
+    padding-left: 0;
+
+    li {
+      font-size: 0.85rem;
+      margin-bottom: 0.25rem;
+
+      &.valid::before {
+        content: "✔ ";
+        color: limegreen;
+      }
+
+      &.invalid::before {
+        content: "✖ ";
+        color: crimson;
+      }
+    }
   }
 }

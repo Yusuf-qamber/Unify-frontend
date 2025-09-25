@@ -34,20 +34,27 @@ const signIn = async (formData) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(formData)
-    })
-    const data = await res.json()
-    if (data.token) {
-      
-      localStorage.setItem('token', data.token)
-      
-      const decodedToken = JSON.parse(atob(data.token.split('.')[1]))
-      return decodedToken
-    }
+    });
 
-  } catch (err) {
-    console.log(err)
-  }
+    const data = await res.json();
+
+if (!res.ok) {
+  const msg = data.err === "Invalid credentials"
+    ? "Invalid username or password"
+    : data.err || "Sign in failed";
+  throw new Error(msg);
 }
+
+    if (data.token) {
+      localStorage.setItem('token', data.token);
+      const decodedToken = JSON.parse(atob(data.token.split('.')[1]));
+      return decodedToken;
+    }
+  } catch (err) {
+    throw err;
+  }
+};
+
 
 const getUser = () => {
   const token = localStorage.getItem('token')
