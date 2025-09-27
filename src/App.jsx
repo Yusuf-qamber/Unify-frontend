@@ -82,11 +82,11 @@ const App = () => {
         <Route path="/" element={<Landing />} />
         <Route
           path="/sign-up"
-          element={<SignUp handleSignUp={handleSignUp} user={user} />}
+          element={<SignUp handleSignUp={handleSignUp} user={user} setUser={setUser} />}
         />
         <Route
           path="/sign-in"
-          element={<SignIn handleSignIn={handleSignIn} user={user} />}
+          element={<SignIn handleSignIn={handleSignIn} user={user} setUser={setUser} />}
         />
         <Route path="/:college" element={<College />} />
         <Route path="/:college/notes" element={<NoteList user={user} />} />
