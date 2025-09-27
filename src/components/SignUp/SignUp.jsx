@@ -10,9 +10,9 @@ const SignUp = (props) => {
     password: "",
     passwordConf: "",
   });
-  const [errors, setErrors] = useState({}); 
+  const [errors, setErrors] = useState({});
 
-  // password rules
+
   const passwordRules = {
     length: formData.password.length >= 12,
     upper: /[A-Z]/.test(formData.password),
@@ -27,14 +27,13 @@ const SignUp = (props) => {
 
   const handleChange = (evt) => {
     setFormData({ ...formData, [evt.target.name]: evt.target.value });
-    setErrors({ ...errors, [evt.target.name]: null }); 
+    setErrors({ ...errors, [evt.target.name]: null });
   };
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     let newErrors = {};
 
-   
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$/;
 
@@ -57,7 +56,6 @@ const SignUp = (props) => {
     if (result.success) {
       navigate("/");
     } else {
-      // backend error handling (e.g., "Email already in use", "Password already used")
       if (result.field) {
         setErrors({ [result.field]: result.message });
       } else {
@@ -79,43 +77,43 @@ const SignUp = (props) => {
 
         {errors.general && <div className="error-box">{errors.general}</div>}
 
-        <label>Username:</label>
-        <input type="text" name="username" onChange={handleChange} />
+        {/* <label>Username:</label> */}
+        <input type="text" name="username" placeholder="Username" onChange={handleChange} />
         {errors.username && <p className="field-error">{errors.username}</p>}
 
-        <label>Email</label>
-        <input type="email" name="email" onChange={handleChange} />
+        {/* <label>Email</label> */}
+        <input type="email" name="email" placeholder="Email" onChange={handleChange} />
         {errors.email && <p className="field-error">{errors.email}</p>}
 
-        <label>Password:</label>
-        <input type="password" name="password" onChange={handleChange} />
+        {/* <label>Password:</label> */}
+        <input type="password" name="password" placeholder="Password" onChange={handleChange} />
         {errors.password && <p className="field-error">{errors.password}</p>}
 
-        
+        {/* <label>Confirm Password:</label> */}
+        <input type="password" name="passwordConf" placeholder="passwordConf" onChange={handleChange} />
 
-        <label>Confirm Password:</label>
-        <input type="password" name="passwordConf" onChange={handleChange} />
         {/* Password Checklist */}
         <div className="password-rules">
           <h4>Password must include:</h4>
           <ul>
             <li className={passwordRules.length ? "valid" : "invalid"}>
-              • At least 12 characters
+              At least 12 characters
             </li>
             <li className={passwordRules.upper ? "valid" : "invalid"}>
-              • One uppercase letter
+              One uppercase letter
             </li>
             <li className={passwordRules.lower ? "valid" : "invalid"}>
-              • One lowercase letter
+              One lowercase letter
             </li>
             <li className={passwordRules.number ? "valid" : "invalid"}>
-              • One number
+              One number
             </li>
             <li className={passwordRules.special ? "valid" : "invalid"}>
-              • One special character
+              One special character
             </li>
           </ul>
         </div>
+
         {errors.passwordConf && (
           <p className="field-error">{errors.passwordConf}</p>
         )}

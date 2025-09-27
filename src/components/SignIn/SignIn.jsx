@@ -32,7 +32,7 @@ const SignIn = (props) => {
     }
   };
 
-  const formIsInvalid = !formData.username || !formData.password;
+  const formIsInvalid = !formData.username || !formData.password||formData.password.length<12
 
   return (
     <div className="auth-container">

@@ -137,16 +137,25 @@
 
     li {
       font-size: 0.85rem;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      &::before {
+        content: "";
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+      }
 
       &.valid::before {
-        content: "✔ ";
-        color: limegreen;
+        background-color: limegreen;
       }
 
       &.invalid::before {
-        content: "✖ ";
-        color: crimson;
+        background-color: crimson;
       }
     }
   }
