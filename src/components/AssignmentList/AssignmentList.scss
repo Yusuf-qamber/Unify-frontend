@@ -1,0 +1,174 @@
+/* AssignmentList.scss - Unique style for assignments */
+
+.assignment-list-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 1rem;
+  font-family: 'Roboto', sans-serif;
+
+  h1 {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+    color: #fafdff;
+    letter-spacing: 1px;
+  }
+
+  .add-assignment-button {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+
+    a button {
+      background-color: #143a52;
+      color: #fff;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: 0.3s ease;
+
+      &:hover {
+        background-color: #3498db;
+      }
+    }
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .assignment-card {
+      position: relative;
+      background: #f0f3f5;
+      padding: 1.5rem 2rem;
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      }
+
+      h2 {
+        margin: 0 0 0.8rem 0;
+        font-size: 1.5rem;
+        color: #34495e;
+      }
+
+      span {
+        display: block;
+        font-size: 0.95rem;
+        color: #555;
+        line-height: 1.5;
+      }
+
+      /* Status badge */
+      .status {
+        position: absolute;
+        top: 1rem;
+        right: 1.5rem;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        color: #fff;
+        text-transform: uppercase;
+      }
+
+      .completed {
+        background-color: #27ae60;
+      }
+
+      .pending {
+        background-color: #f1c40f;
+        color: #333;
+      }
+
+      .overdue {
+        background-color: #e74c3c;
+      }
+    }
+  }
+
+  p {
+    text-align: center;
+    font-size: 1rem;
+    color: #ffffff;
+  }
+}
+.assignment-list-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem;
+
+  ul {
+    position: relative;
+    padding-left: 2rem;
+    list-style: none;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 20px;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background: #ccc;
+      border-radius: 2px;
+    }
+
+    .assignment-card {
+      position: relative;
+      background: #f0f4f7;
+      margin-bottom: 2rem;
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+      &:hover {
+        transform: translateX(5px);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: -34px;
+        top: 1rem;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #3498db;
+        border: 3px solid #fff;
+      }
+
+      h2 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.3rem;
+      }
+
+      span.status {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        padding: 0.3rem 0.7rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        color: #fff;
+
+        &.completed { background: #27ae60; }
+        &.pending   { background: #f1c40f; color: #333; }
+        &.overdue   { background: #e74c3c; }
+      }
+    }
+  }
+}
