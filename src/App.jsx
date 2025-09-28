@@ -18,6 +18,10 @@ import EventForm from "./components/EventForm/EventForm.jsx";
 import Schedule from "./components/Schedule/Schedule";
 import ScheduleForm from "./components/ScheduleForm/ScheduleForm";
 import { ConfirmProvider } from "material-ui-confirm";
+import AssignmentList from "./components/AssignmentList/AssignmentList.jsx";
+import AssignmentDetails from "./components/AssignmentDetails/AssignmentDetails.jsx";
+import AssignmentForm from "./components/AssignmentForm/AssignmentForm.jsx";
+
 
 const App = () => {
   const navigate = useNavigate();
@@ -121,6 +125,11 @@ const App = () => {
               element={<EventForm handleUpdateEvent={handleUpdateEvent} />}
             />
             <Route path="/schedule" element={<Schedule user={user} />} />
+            <Route path="/assignments" element={<AssignmentList user={user} />} />
+<Route path="/assignments/new" element={<AssignmentForm user={user} />} />
+<Route path="/assignments/:assignmentId" element={<AssignmentDetails user={user} />} />
+<Route path="/assignments/:assignmentId/edit" element={<AssignmentForm user={user} />} />
+
 {user && (
   <>
     <Route path="/schedule/new" element={<ScheduleForm />} />
