@@ -1,0 +1,169 @@
+.gpa-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #f4f5f9, #e2e8f0);
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+.gpa-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+
+  @media (max-width: 576px) {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+}
+
+.gpa-list-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, #5a67d8, #667eea);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    filter: brightness(1.15);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+}
+
+.cumulative-gpa {
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  border: 2px solid rgba(90,103,216,0.2);
+  background: linear-gradient(135deg, rgba(90,103,216,0.08), rgba(102,126,234,0.08));
+  font-weight: 600;
+  color: #0a146e;
+  animation: pulse 2s ease-in-out infinite;
+
+  @media (max-width: 576px) {
+    margin-bottom: 0.5rem;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(90,103,216,0.4); }
+  50% { box-shadow: 0 0 0 10px rgba(90,103,216,0); }
+}
+
+.btn-add-gpa {
+  background: linear-gradient(135deg, #667eea, #5a67d8);
+  color: #ffffff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-block;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(90,103,216,0.35);
+    background: linear-gradient(135deg, #5a67d8, #4c5cd7);
+  }
+}
+
+.gpa-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+.gpa-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border: 1px solid rgba(90,103,216,0.15);
+  padding: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+  }
+}
+
+.gpa-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+
+  .gpa-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    .semester-name {
+      font-weight: 600;
+      font-size: 1.25rem;
+      transition: 0.3s ease;
+    }
+
+    .gpa-status {
+      background: linear-gradient(135deg, #5a67d8, #667eea);
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-weight: 600;
+      color: #ffffff;
+      white-space: nowrap;
+    }
+  }
+
+  .gpa-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: #7b82a0;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    padding-top: 1rem;
+
+    .course-count {}
+    .created-date { color: #a0aec0; }
+  }
+}
+
+.loading-msg,
+.no-gpa-msg {
+  text-align: center;
+  font-size: 1.125rem;
+  color: #5a67d8;
+  padding: 3rem;
+  background: rgba(255,255,255,0.9);
+  border-radius: 20px;
+  max-width: 500px;
+  margin: 2rem auto;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+  animation: pulse 1.5s ease-in-out infinite;
+}
