@@ -21,8 +21,9 @@ import { ConfirmProvider } from "material-ui-confirm";
 import AssignmentList from "./components/AssignmentList/AssignmentList.jsx";
 import AssignmentDetails from "./components/AssignmentDetails/AssignmentDetails.jsx";
 import AssignmentForm from "./components/AssignmentForm/AssignmentForm.jsx";
-
-
+import GpaList from "./components/GpaList/GpaList.jsx";
+import GpaForm from "./components/GpaForm/GpaForm.jsx";
+import GpaDetails from "./components/GpaDetails/GpaDetails.jsx";
 const App = () => {
   const navigate = useNavigate();
 
@@ -129,6 +130,10 @@ const App = () => {
 <Route path="/assignments/new" element={<AssignmentForm user={user} />} />
 <Route path="/assignments/:assignmentId" element={<AssignmentDetails user={user} />} />
 <Route path="/assignments/:assignmentId/edit" element={<AssignmentForm user={user} />} />
+<Route path="/gpa" element={<GpaList user={user} />} />
+<Route path="/gpa/new" element={<GpaForm />} />
+<Route path="/gpa/:gpaId" element={<GpaDetails user={user} />} />
+<Route path="/gpa/:gpaId/edit" element={<GpaForm />} />
 
 {user && (
   <>

@@ -1,0 +1,339 @@
+// Variables (consistent with GpaList.scss)
+$primary-color: #4361ee;
+$secondary-color: #3a0ca3;
+$success-color: #4cc9f0;
+$warning-color: #f72585;
+$danger-color: #e63946;
+$text-color: #2b2d42;
+$text-light: #8d99ae;
+$background-color: #f8f9fa;
+$card-background: #ffffff;
+$border-color: #e9ecef;
+$shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+$shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.15);
+$border-radius: 12px;
+$transition: all 0.3s ease;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin card-style {
+  background: $card-background;
+  border-radius: $border-radius;
+  box-shadow: $shadow;
+  transition: $transition;
+  border: 1px solid $border-color;
+}
+
+// Container Styles
+.gpa-details-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: $background-color;
+  min-height: 100vh;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+// Header Styles
+.gpa-details-header {
+  @include card-style;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, $primary-color, $secondary-color);
+  color: white;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(30%, -30%);
+  }
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+  }
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+
+  @media (max-width: 576px) {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+}
+
+.semester-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+ color: #fcfcfc;
+  @media (max-width: 768px) {
+    font-size: 1.75rem;
+  }
+}
+
+.gpa-display {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 1rem 1.5rem;
+  border-radius: $border-radius;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.gpa-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  opacity: 0.9;
+  margin-bottom: 0.25rem;
+}
+
+.gpa-value {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+}
+
+// Courses Section
+.courses-section {
+  margin-bottom: 2rem;
+}
+
+.courses-title {
+  color: $text-color;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid $border-color;
+}
+
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+// Course Card Styles
+.course-card {
+  @include card-style;
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  transition: $transition;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: $shadow-hover;
+  }
+}
+
+.course-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+}
+
+.course-info {
+  flex: 1;
+}
+
+.course-name {
+  color: $text-color;
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.4;
+}
+
+.course-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+.credit-hours {
+  background: lighten($primary-color, 45%);
+  color: $primary-color;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.course-grade {
+  color: $text-light;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: lighten($success-color, 40%);
+  color: darken($success-color, 20%);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+}
+
+// Actions Styles
+.gpa-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  padding: 2rem 0;
+  border-top: 1px solid $border-color;
+
+  @media (max-width: 576px) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.btn-edit {
+  background: linear-gradient(135deg, $primary-color, $secondary-color);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: $transition;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: $shadow;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-hover;
+    background: linear-gradient(135deg, darken($primary-color, 10%), darken($secondary-color, 10%));
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.btn-delete {
+  background: linear-gradient(135deg, $danger-color, $warning-color);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: $transition;
+  box-shadow: $shadow;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-hover;
+    background: linear-gradient(135deg, darken($danger-color, 10%), darken($warning-color, 10%));
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Message Styles
+.loading-msg,
+.not-found-msg {
+  text-align: center;
+  font-size: 1.125rem;
+  color: $text-light;
+  padding: 3rem;
+  background: $card-background;
+  border-radius: $border-radius;
+  margin: 2rem auto;
+  max-width: 500px;
+  @include card-style;
+}
+
+.loading-msg {
+  color: $primary-color;
+  font-weight: 600;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.not-found-msg {
+  color: $warning-color;
+}
+
+// Loading Animation
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+// Empty State
+.courses-grid:empty::after {
+  content: "No courses found for this semester.";
+  text-align: center;
+  color: $text-light;
+  font-style: italic;
+  padding: 2rem;
+  grid-column: 1 / -1;
+}
+
+// Responsive adjustments
+@media (max-width: 480px) {
+  .gpa-details-header {
+    text-align: center;
+  }
+  
+  .header-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .gpa-display {
+    width: 100%;
+    max-width: 200px;
+  }
+}
