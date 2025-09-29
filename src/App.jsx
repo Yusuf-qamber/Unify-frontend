@@ -24,6 +24,7 @@ import AssignmentForm from "./components/AssignmentForm/AssignmentForm.jsx";
 import GpaList from "./components/GpaList/GpaList.jsx";
 import GpaForm from "./components/GpaForm/GpaForm.jsx";
 import GpaDetails from "./components/GpaDetails/GpaDetails.jsx";
+import Profile from "./components/Profile/Profile.jsx";
 const App = () => {
   const navigate = useNavigate();
 
@@ -134,6 +135,7 @@ const App = () => {
 <Route path="/gpa/new" element={<GpaForm />} />
 <Route path="/gpa/:gpaId" element={<GpaDetails user={user} />} />
 <Route path="/gpa/:gpaId/edit" element={<GpaForm />} />
+<Route path="/profile" element={<Profile onSignOut={handleSignOut} user={user}/>}/>
 
 {user && (
   <>

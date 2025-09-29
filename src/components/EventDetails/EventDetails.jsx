@@ -1,4 +1,10 @@
-import { useParams, Link, Navigate, useNavigate } from "react-router-dom";
+import {
+  useParams,
+  Link,
+  Navigate,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import { useState, useEffect } from "react";
 import CommentForm from "../CommentForm/CommentForm.jsx";
 import * as eventServics from "../../services/eventServics.js";
@@ -7,6 +13,8 @@ import { FaTrash, FaPen } from "react-icons/fa";
 import "./EventDetails.scss";
 
 const EventDetails = (props) => {
+  const location = useLocation(); // <-- get state from navigation
+  const cameFromProfile = location.state?.fromProfile;
   const navigate = useNavigate();
   const { college, eventId } = useParams();
   const [event, setEvent] = useState(null);
@@ -15,9 +23,10 @@ const EventDetails = (props) => {
   const [editContent, setEditContent] = useState("");
 
   useEffect(() => {
-        if (!eventId || eventId === "new"){
+    if (!eventId || eventId === "new") {
       setLoading(false);
-      return;}
+      return;
+    }
     const fetchEvent = async () => {
       try {
         const data = await eventServics.showEvent(college, eventId);
@@ -92,7 +101,9 @@ const EventDetails = (props) => {
           <span>
             By: <strong>{event.owner?.username || "Unknown"}</strong>
           </span>
-          <span>Posted on: {new Date(event.createdAt).toLocaleDateString()}</span>
+          <span>
+            Posted on: {new Date(event.createdAt).toLocaleDateString()}
+          </span>
         </div>
 
         <p className="description">{event.description}</p>
@@ -108,7 +119,10 @@ const EventDetails = (props) => {
 
         {event.owner?._id === props.user?._id && (
           <div className="actions">
-            <Link to={`/${college}/events/${eventId}/edit`} className="btn edit">
+            <Link
+              to={`/${college}/events/${eventId}/edit`}
+              className="btn edit"
+            >
               Edit
             </Link>
             <button
@@ -120,10 +134,12 @@ const EventDetails = (props) => {
           </div>
         )}
 
-
         <div className="back-link-wrapper">
-          <Link to={`/${college}/events`} className="back-link-btn">
-            Back to Events
+          <Link
+            to={cameFromProfile ? "/profile" : `/${college}/events`}
+            className="back-link-btn"
+          >
+            {cameFromProfile ? "Back to Profile" : "Back to Events"}
           </Link>
         </div>
       </div>
@@ -146,7 +162,7 @@ const EventDetails = (props) => {
             {event.comments.map((comment) => (
               <article key={comment._id} className="comment">
                 <div className="author">
-                  {comment.author?.username} {" "}
+                  {comment.author?.username}{" "}
                   {new Date(comment.createdAt).toLocaleDateString()}
                 </div>
 
