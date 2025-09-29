@@ -1,4 +1,4 @@
-import { useParams, Link, Navigate, useNavigate } from "react-router-dom";
+import { useParams, Link, Navigate, useNavigate,useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import * as noteService from "../../services/noteService.js";
 import CommentForm from "../CommentForm/CommentForm.jsx";
@@ -6,6 +6,8 @@ import "./NoteDetails.scss";
 import { FaTrash, FaPen } from "react-icons/fa";
 
 const NoteDetails = (props) => {
+    const location = useLocation(); // <-- get state from navigation
+  const cameFromProfile = location.state?.fromProfile;
   const navigate = useNavigate();
   const { college, noteId } = useParams();
   const [note, setNote] = useState(null);
@@ -120,9 +122,12 @@ const NoteDetails = (props) => {
           </div>
         )}
           <div className="back-link-wrapper">
-    <Link to={`/${college}/notes`} className="back-link-btn">
-      Back to Notes
-    </Link>
+          <Link
+            to={cameFromProfile ? "/profile" : `/${college}/notes`}
+            className="back-link-btn"
+          >
+            {cameFromProfile ? "Back to Profile" : "Back to Notes"}
+          </Link>
   </div>
       </div>
 
