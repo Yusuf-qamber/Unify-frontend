@@ -25,6 +25,7 @@ import GpaList from "./components/GpaList/GpaList.jsx";
 import GpaForm from "./components/GpaForm/GpaForm.jsx";
 import GpaDetails from "./components/GpaDetails/GpaDetails.jsx";
 import Profile from "./components/Profile/Profile.jsx";
+import CollegeChat from "./components/CollegeChat/CollegeChat.jsx";
 const App = () => {
   const navigate = useNavigate();
 
@@ -117,7 +118,8 @@ const App = () => {
           <>
             <Route path="/:college/notes/new" element={<NoteForm />} />
             <Route path="/:college/events/new" element={<EventForm />} />
-            
+            <Route path="/:college/chat" element={<CollegeChat user={user} />} />
+
             <Route
               path="/:college/notes/:noteId/edit"
               element={<NoteForm handleUpdateNote={handleUpdateNote} />}
