@@ -8,8 +8,7 @@ function getAuthHeaders() {
   };
 }
 
-
-const getConversations = async () => {
+export const getConversations = async () => {
   try {
     const res = await fetch(`${BASE_URL}/conversations`, {
       headers: getAuthHeaders(),
@@ -17,13 +16,12 @@ const getConversations = async () => {
     if (!res.ok) throw new Error("Failed to fetch conversations");
     return await res.json();
   } catch (err) {
-    console.error("❌ getConversations error:", err);
+    console.error("chatService.getConversations error:", err);
     return [];
   }
 };
 
-
-const getPrivateMessages = async (userId) => {
+export const getPrivateMessages = async (userId) => {
   try {
     const res = await fetch(`${BASE_URL}/private/${userId}`, {
       headers: getAuthHeaders(),
@@ -31,13 +29,12 @@ const getPrivateMessages = async (userId) => {
     if (!res.ok) throw new Error("Failed to fetch messages");
     return await res.json();
   } catch (err) {
-    console.error("❌ getPrivateMessages error:", err);
+    console.error("chatService.getPrivateMessages error:", err);
     return [];
   }
 };
 
-
-const sendPrivateMessage = async (userId, content) => {
+export const sendPrivateMessage = async (userId, content) => {
   try {
     const res = await fetch(`${BASE_URL}/private/${userId}`, {
       method: "POST",
@@ -47,35 +44,22 @@ const sendPrivateMessage = async (userId, content) => {
     if (!res.ok) throw new Error("Failed to send message");
     return await res.json();
   } catch (err) {
-    console.error("❌ sendPrivateMessage error:", err);
+    console.error("chatService.sendPrivateMessage error:", err);
     return null;
   }
 };
 
-
-const searchUsers = async (query) => {
+export const searchUsers = async (query) => {
   try {
     const res = await fetch(`${BASE_URL}/search/${encodeURIComponent(query)}`, {
       headers: getAuthHeaders(),
     });
     if (!res.ok) throw new Error("Failed to search users");
     const users = await res.json();
-
-    //  Wrap users so Sidebar can render them
-    return users.map(u => ({
-      user: u,       // this is key
-      lastMessage: null,
-      lastMessageAt: null
-    }));
+    // Normalize so Sidebar can use same shape as conversations
+    return users.map((u) => ({ user: u, lastMessage: null, lastMessageAt: null }));
   } catch (err) {
-    console.error("❌ searchUsers error:", err);
+    console.error("chatService.searchUsers error:", err);
     return [];
   }
 };
-
-export{
-  getConversations,
-  getPrivateMessages,
-  sendPrivateMessage,
-  searchUsers
-}

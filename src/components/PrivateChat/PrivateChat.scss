@@ -78,6 +78,33 @@
   }
 }
 
+.chat-user-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  .avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ccc;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    margin: 0;
+  }
+}
+
+
 // /* PrivateChat.scss */
 // .private-chat {
 //   flex: 1;

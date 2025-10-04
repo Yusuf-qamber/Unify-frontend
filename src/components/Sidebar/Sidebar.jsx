@@ -2,18 +2,17 @@ import { useState } from "react";
 import "./Sidebar.scss";
 import * as chatService from "../../services/chatService";
 
-const Sidebar = ({ conversations, onSelectUser, onlineUsers }) => {
+const Sidebar = ({ conversations = [], onSelectUser, onlineUsers = {} }) => {
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
 
   const handleSearch = async (e) => {
     const val = e.target.value;
     setSearch(val);
-
     if (val.trim().length > 1) {
       try {
         const data = await chatService.searchUsers(val);
-        setResults(data);
+        setResults(data || []);
       } catch (err) {
         console.error("Search failed:", err);
         setResults([]);
@@ -47,13 +46,14 @@ const Sidebar = ({ conversations, onSelectUser, onlineUsers }) => {
           </p>
         )}
 
-        {displayList.map((item, index) => {
-          const u = item.user || {};
-          const isOnline = onlineUsers?.[u._id]; 
+        {displayList.map((item, idx) => {
+          
+          const u = item.user || item;
+          const isOnline = !!onlineUsers?.[u._id];
 
           return (
             <div
-              key={u._id || index}
+              key={u._id || `search-${idx}`}
               className="chat-item"
               onClick={() => u._id && onSelectUser(u)}
             >
@@ -67,13 +67,14 @@ const Sidebar = ({ conversations, onSelectUser, onlineUsers }) => {
                   {u.username || "Unknown User"}
                   <span
                     className="online-dot"
-                    style={{
-                      background: isOnline ? "#31d158" : "#ccc",
-                    }}
-                  ></span>
+                    style={{ background: isOnline ? "#31d158" : "#ccc" }}
+                    title={isOnline ? "Online" : "Offline"}
+                  />
                 </div>
-                {item.lastMessage && (
+                {item.lastMessage ? (
                   <p className="last-message">{item.lastMessage}</p>
+                ) : (
+                  <p className="last-message muted">No messages yet</p>
                 )}
               </div>
             </div>

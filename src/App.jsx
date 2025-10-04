@@ -198,7 +198,8 @@ if (socket && user?._id) {
 <Route path="/gpa/:gpaId" element={<GpaDetails user={user} />} />
 <Route path="/gpa/:gpaId/edit" element={<GpaForm />} />
 <Route path="/profile" element={<Profile onSignOut={handleSignOut} user={user}/>}/>
-<Route path="/chat" element={<ChatPage user={user} socket={socket} onlineUsers={onlineUsers}/>}/>
+<Route path="/profile/:userId" element={<Profile />} />
+<Route path="/chat" element={<ChatPage user={user} socket={socket} onlineUsers={onlineUsers} />}/>
 <Route path="/chat/:userId" element={<PrivateChat user={user} socket={socket} />} />
 
 {user && (
