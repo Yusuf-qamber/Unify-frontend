@@ -63,3 +63,17 @@ export const searchUsers = async (query) => {
     return [];
   }
 };
+
+export const deleteConversation = async (userId) => {
+  try {
+    const res = await fetch(`${BASE_URL}/conversation/${userId}`, {
+      method: "DELETE",
+      headers: getAuthHeaders(),
+    });
+    if (!res.ok) throw new Error("Failed to delete conversation");
+    return await res.json();
+  } catch (err) {
+    console.error("chatService.deleteConversation error:", err);
+    return null;
+  }
+};

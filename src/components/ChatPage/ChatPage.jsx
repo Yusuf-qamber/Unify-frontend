@@ -3,12 +3,13 @@ import "./ChatPage.scss";
 import Sidebar from "../Sidebar/Sidebar";
 import PrivateChat from "../PrivateChat/PrivateChat";
 import * as chatService from "../../services/chatService";
+import { confirm } from "material-ui-confirm";
 
 const ChatPage = ({ user, socket, onlineUsers }) => {
   const [conversations, setConversations] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
 
-
+  // fetch initial conversations
   const fetchConversations = useCallback(async () => {
     try {
       const data = await chatService.getConversations();
@@ -22,19 +23,19 @@ const ChatPage = ({ user, socket, onlineUsers }) => {
     fetchConversations();
   }, [fetchConversations]);
 
-
   useEffect(() => {
     if (!socket || !user) return;
 
+    // ✅ handle receiving messages live
     const handleReceive = (msg) => {
-      // determine the other user for this conversation
-      const otherUser = msg.sender && msg.sender._id === user._id ? msg.receiver : msg.sender;
+      const otherUser =
+        msg.sender && msg.sender._id === user._id
+          ? msg.receiver
+          : msg.sender;
       if (!otherUser) return;
 
       setConversations((prev) => {
-        // remove existing entry for otherUser if present
         const filtered = prev.filter((c) => c.user._id !== otherUser._id);
-        // prepend updated conversation
         return [
           {
             user: otherUser,
@@ -45,17 +46,64 @@ const ChatPage = ({ user, socket, onlineUsers }) => {
         ];
       });
 
-
+      if (selectedUser && selectedUser._id === otherUser._id) {
+        setSelectedUser((prev) => ({ ...prev }));
+      }
     };
 
+    const handleNewConversation = (conv) => {
+      setConversations((prev) => {
+        const exists = prev.find((c) => c.user._id === conv.user._id);
+        if (exists) return prev;
+        return [conv, ...prev];
+      });
+    };
+
+    const handleConversationDeleted = ({ userId }) => {
+    setConversations((prev) => prev.filter((c) => c.user._id !== userId));
+    if (selectedUser && selectedUser._id === userId) {
+      setSelectedUser(null);
+    }
+  };
+
+    socket.on("conversationDeleted", handleConversationDeleted);
     socket.on("receivePrivateMessage", handleReceive);
+    socket.on("newConversation", handleNewConversation);
 
     return () => {
       socket.off("receivePrivateMessage", handleReceive);
+      socket.off("newConversation", handleNewConversation);
+      socket.off("conversationDeleted", handleConversationDeleted);
     };
-  }, [socket, user]);
+  }, [socket, user, selectedUser]);
 
 
+  const handleDeleteConversation = async (userId) => {
+    try {
+      const { confirmed } = await confirm({
+        title: "Are You Sure?",
+        description: <span style={{ fontWeight: 'bold' }}>This chat will be deleted permanently!</span>,
+        confirmationText: "Delete",
+        cancellationText: "Cancel",
+        confirmationButtonProps: { style: { backgroundColor: '#e74c3c', color: '#fff' } },
+        cancellationButtonProps: { style: { backgroundColor: '#ccc', color: '#333' } },
+        dialogProps: { PaperProps: { style: { borderRadius: '1rem', padding: '1rem' } } },
+      });
+
+      if(!confirmed) return
+      await chatService.deleteConversation(userId);
+      
+      setConversations((prev) =>
+        prev.filter((c) => c.user._id !== userId)
+      );
+      if (selectedUser && selectedUser._id === userId) {
+        setSelectedUser(null);
+      }
+      socket.emit("deleteConversation", { userId: user._id, otherUserId: userId });
+    } catch (err) {
+      console.error("Error deleting conversation:", err);
+    }
+  };
 
   return (
     <div className="chat-page">
@@ -63,6 +111,8 @@ const ChatPage = ({ user, socket, onlineUsers }) => {
         conversations={conversations}
         onSelectUser={(u) => setSelectedUser(u)}
         onlineUsers={onlineUsers}
+        selectedUser={selectedUser}
+        onDeleteConversation={handleDeleteConversation} 
       />
       {selectedUser ? (
         <PrivateChat

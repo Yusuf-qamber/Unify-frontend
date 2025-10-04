@@ -73,6 +73,84 @@
   margin-left: 5px;
 }
 
+.chat-item-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .delete-btn {
+    background: transparent;
+    border: none;
+    color: red;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-left: 0.5rem;
+
+    &:hover {
+      color: darkred;
+    }
+  }
+}
+.chat-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #f3f3f3;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #f9f9f9;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+  .chat-info {
+    flex: 1;
+    .username {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+
+      .online-dot {
+        width: 8px;
+        height: 8px;
+        background: #31d158;
+        border-radius: 50%;
+        margin-left: 5px;
+      }
+    }
+
+    .last-message {
+      font-size: 0.9rem;
+      color: #666;
+    }
+  }
+
+  .delete-btn {
+    background: transparent;
+    border: none;
+    font-size: 1rem;
+    color: #999;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #eee;
+      color: #333;
+    }
+  }
+}
+
+
+
 
 
 // /* Sidebar.scss */

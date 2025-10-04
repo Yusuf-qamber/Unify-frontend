@@ -35,15 +35,21 @@ const PrivateChat = ({ user, selectedUser, socket }) => {
       const isRelevant =
         (msg.sender && msg.sender._id === selectedUser._id) ||
         (msg.receiver && msg.receiver === selectedUser._id) ||
-        (msg.sender && msg.sender._id === user._id && msg.receiver === selectedUser._id);
+        (msg.sender &&
+          msg.sender._id === user._id &&
+          msg.receiver === selectedUser._id);
 
       if (!isRelevant) return;
 
       setMessages((prev) => {
-
         const existingIndex = prev.findIndex((m) => {
-  
-          if (m.tempId && msg.content === m.content && msg.sender && m.sender && msg.sender._id === m.sender._id) {
+          if (
+            m.tempId &&
+            msg.content === m.content &&
+            msg.sender &&
+            m.sender &&
+            msg.sender._id === m.sender._id
+          ) {
             // prefer replacing optimistic
             return true;
           }
@@ -54,7 +60,10 @@ const PrivateChat = ({ user, selectedUser, socket }) => {
             m.sender &&
             msg.sender &&
             m.sender._id === m.sender._id &&
-            Math.abs(new Date(m.createdAt).getTime() - new Date(msg.createdAt).getTime()) < 8000
+            Math.abs(
+              new Date(m.createdAt).getTime() -
+                new Date(msg.createdAt).getTime()
+            ) < 8000
           ) {
             return true;
           }
@@ -108,7 +117,10 @@ const PrivateChat = ({ user, selectedUser, socket }) => {
     } else {
       // fallback — POST using API (ensures persistence)
       try {
-        const saved = await chatService.sendPrivateMessage(selectedUser._id, text);
+        const saved = await chatService.sendPrivateMessage(
+          selectedUser._id,
+          text
+        );
         if (saved) {
           setMessages((p) => {
             // replace temp by saved if matches
@@ -132,7 +144,7 @@ const PrivateChat = ({ user, selectedUser, socket }) => {
   return (
     <div className="private-chat">
       <header>
-<Link to={`/profile/${selectedUser._id}`} className="chat-user-link">
+        <Link to={`/profile/${selectedUser._id}`} className="chat-user-link">
           <img
             src={selectedUser.picture || "/assets/default.png"}
             alt={selectedUser.username}
@@ -150,7 +162,10 @@ const PrivateChat = ({ user, selectedUser, socket }) => {
           >
             <div className="text">{m.content}</div>
             <span className="time">
-              {new Date(m.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+              {new Date(m.createdAt).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
             </span>
           </div>
         ))}

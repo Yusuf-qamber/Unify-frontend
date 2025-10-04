@@ -2,7 +2,12 @@ import { useState } from "react";
 import "./Sidebar.scss";
 import * as chatService from "../../services/chatService";
 
-const Sidebar = ({ conversations = [], onSelectUser, onlineUsers = {} }) => {
+const Sidebar = ({
+  conversations = [],
+  onSelectUser,
+  onlineUsers = {},
+  onDeleteConversation,
+}) => {
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
 
@@ -47,22 +52,24 @@ const Sidebar = ({ conversations = [], onSelectUser, onlineUsers = {} }) => {
         )}
 
         {displayList.map((item, idx) => {
-          
           const u = item.user || item;
           const isOnline = !!onlineUsers?.[u._id];
 
           return (
-            <div
-              key={u._id || `search-${idx}`}
-              className="chat-item"
-              onClick={() => u._id && onSelectUser(u)}
-            >
+            <div key={u._id || `search-${idx}`} className="chat-item">
               <img
                 src={u.picture || "/assets/default.png"}
                 alt={u.username || "avatar"}
                 className="avatar"
               />
-              <div className="chat-info">
+              <div
+                className="chat-info"
+                onClick={() => {
+                  u._id && onSelectUser(u);
+                  setSearch("");
+                  setResults([]);
+                }}
+              >
                 <div className="username">
                   {u.username || "Unknown User"}
                   <span
@@ -77,6 +84,19 @@ const Sidebar = ({ conversations = [], onSelectUser, onlineUsers = {} }) => {
                   <p className="last-message muted">No messages yet</p>
                 )}
               </div>
+
+              {item.lastMessageAt && (
+                <button
+                  className="delete-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDeleteConversation(u._id);
+                  }}
+                  title="Delete conversation"
+                >
+                  ✕
+                </button>
+              )}
             </div>
           );
         })}
