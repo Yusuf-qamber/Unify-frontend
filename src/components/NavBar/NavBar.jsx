@@ -27,6 +27,7 @@ const NavBar = ({ user, handleSignOut }) => {
             <li><Link to="/schedule">My Schedule</Link></li>
             <li><Link to="/assignments">Assignments</Link></li>
             <li><Link to="/gpa">GPA Calculator</Link></li>
+            <li><Link to="/chat">Chat</Link></li>
             {/* <li className="navbar__welcome">Hi, {user.username}</li> */}
             <li className="navbar__welcome"><Link to="/profile">Hi, {user.username}</Link></li>
             <li><Link to="/">Home</Link></li>

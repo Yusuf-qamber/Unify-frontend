@@ -5,7 +5,7 @@ import SignIn from "./components/SignIn/SignIn";
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import * as authService from "./services/authService.js";
 import * as noteService from "./services/noteService.js";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Landing from "./components/Landing/Landing";
 import College from "./components/College/College.jsx";
 import NoteList from "./components/NoteList/NoteList.jsx";
@@ -26,11 +26,67 @@ import GpaForm from "./components/GpaForm/GpaForm.jsx";
 import GpaDetails from "./components/GpaDetails/GpaDetails.jsx";
 import Profile from "./components/Profile/Profile.jsx";
 import CollegeChat from "./components/CollegeChat/CollegeChat.jsx";
+import ChatPage from "./components/ChatPage/ChatPage.jsx";
+import PrivateChat from "./components/PrivateChat/PrivateChat.jsx"
+import { io } from "socket.io-client";
+
+
 const App = () => {
   const navigate = useNavigate();
 
   const initialState = authService.getUser();
   const [user, setUser] = useState(initialState);
+  const [socket, setSocket] = useState(null);
+  const [onlineUsers, setOnlineUsers] = useState({});
+
+  useEffect(() => {
+    if (user) {
+      // connect to backend socket server
+      const newSocket = io(import.meta.env.VITE_BACK_END_SERVER_URL, {
+        query: { userId: user._id }, // send userId to identify the socket
+      });
+
+      setSocket(newSocket);
+
+      return () => {
+        newSocket.disconnect();
+      };
+    }
+  }, [user]);
+
+  useEffect(() => {
+  if (!socket || !user?._id) return;
+
+  // Mark user online
+  socket.emit("userOnline", user._id);
+
+  // Listen for updates
+  socket.on("updateUserStatus", (users) => {
+    setOnlineUsers(users);
+  });
+
+  // Clean up
+  return () => {
+    socket.off("updateUserStatus");
+  };
+}, [socket, user]);
+
+useEffect(() => {
+  const handleBeforeUnload = () => {
+    if (socket && user?._id) {
+      socket.emit("userOffline", user._id);
+      socket.disconnect();
+    }
+  };
+
+  window.addEventListener("beforeunload", handleBeforeUnload);
+
+  return () => {
+    window.removeEventListener("beforeunload", handleBeforeUnload);
+  };
+}, [socket, user]);
+
+
 
   const handleSignUp = async (formData) => {
     try {
@@ -44,6 +100,10 @@ const App = () => {
   };
 
   const handleSignOut = () => {
+if (socket && user?._id) {
+    socket.emit("userOffline", user._id); 
+    socket.disconnect(); 
+  }
     localStorage.removeItem("token");
     setUser(null);
   };
@@ -138,6 +198,8 @@ const App = () => {
 <Route path="/gpa/:gpaId" element={<GpaDetails user={user} />} />
 <Route path="/gpa/:gpaId/edit" element={<GpaForm />} />
 <Route path="/profile" element={<Profile onSignOut={handleSignOut} user={user}/>}/>
+<Route path="/chat" element={<ChatPage user={user} socket={socket} onlineUsers={onlineUsers}/>}/>
+<Route path="/chat/:userId" element={<PrivateChat user={user} socket={socket} />} />
 
 {user && (
   <>
