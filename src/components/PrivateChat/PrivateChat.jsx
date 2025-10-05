@@ -3,7 +3,7 @@ import "./PrivateChat.scss";
 import * as chatService from "../../services/chatService";
 import { Link } from "react-router-dom";
 
-const PrivateChat = ({ user, selectedUser, socket }) => {
+const PrivateChat = ({ user, selectedUser, socket,isMobileView,onBack }) => {
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
   const chatEndRef = useRef(null);
@@ -26,12 +26,10 @@ const PrivateChat = ({ user, selectedUser, socket }) => {
     };
   }, [selectedUser]);
 
-  // handle incoming messages via socket
   useEffect(() => {
     if (!socket || !selectedUser) return;
 
     const handleReceive = (msg) => {
-      // Ensure this message belongs to the currently open chat
       const isRelevant =
         (msg.sender && msg.sender._id === selectedUser._id) ||
         (msg.receiver && msg.receiver === selectedUser._id) ||
@@ -42,52 +40,13 @@ const PrivateChat = ({ user, selectedUser, socket }) => {
       if (!isRelevant) return;
 
       setMessages((prev) => {
-        const existingIndex = prev.findIndex((m) => {
-          if (
-            m.tempId &&
-            msg.content === m.content &&
-            msg.sender &&
-            m.sender &&
-            msg.sender._id === m.sender._id
-          ) {
-            // prefer replacing optimistic
-            return true;
-          }
-          // fallback match content + sender + within 5s
-          if (
-            !m._id &&
-            m.content === msg.content &&
-            m.sender &&
-            msg.sender &&
-            m.sender._id === m.sender._id &&
-            Math.abs(
-              new Date(m.createdAt).getTime() -
-                new Date(msg.createdAt).getTime()
-            ) < 8000
-          ) {
-            return true;
-          }
-          return false;
-        });
-
-        if (existingIndex !== -1) {
-          // replace that temp message with msg
-          const copy = [...prev];
-          copy[existingIndex] = msg;
-          return copy;
-        }
-
-        // avoid duplicate if message id already present
         if (msg._id && prev.some((m) => m._id === msg._id)) return prev;
-
         return [...prev, msg];
       });
     };
 
     socket.on("receivePrivateMessage", handleReceive);
-    return () => {
-      socket.off("receivePrivateMessage", handleReceive);
-    };
+    return () => socket.off("receivePrivateMessage", handleReceive);
   }, [socket, selectedUser, user]);
 
   useEffect(() => {
@@ -97,7 +56,6 @@ const PrivateChat = ({ user, selectedUser, socket }) => {
   const sendMessage = async () => {
     if (!text.trim() || !selectedUser) return;
 
-    // optimistic message (temporary)
     const temp = {
       tempId: Math.random().toString(36).slice(2, 9),
       sender: { _id: user._id },
@@ -107,7 +65,6 @@ const PrivateChat = ({ user, selectedUser, socket }) => {
     };
     setMessages((p) => [...p, temp]);
 
-    // emit via socket (server will save and emit back populated message)
     if (socket) {
       socket.emit("sendPrivateMessage", {
         sender: user._id,
@@ -115,7 +72,6 @@ const PrivateChat = ({ user, selectedUser, socket }) => {
         content: text,
       });
     } else {
-      // fallback — POST using API (ensures persistence)
       try {
         const saved = await chatService.sendPrivateMessage(
           selectedUser._id,
@@ -123,7 +79,6 @@ const PrivateChat = ({ user, selectedUser, socket }) => {
         );
         if (saved) {
           setMessages((p) => {
-            // replace temp by saved if matches
             const idx = p.findIndex((m) => m.tempId === temp.tempId);
             if (idx !== -1) {
               const copy = [...p];
@@ -144,6 +99,15 @@ const PrivateChat = ({ user, selectedUser, socket }) => {
   return (
     <div className="private-chat">
       <header>
+          {isMobileView && (
+    <button
+      className="back-btn"
+      onClick={onBack}
+      aria-label="Back to conversations"
+    >
+      ←
+    </button>
+  )}
         <Link to={`/profile/${selectedUser._id}`} className="chat-user-link">
           <img
             src={selectedUser.picture || "/assets/default.png"}
@@ -173,13 +137,18 @@ const PrivateChat = ({ user, selectedUser, socket }) => {
       </div>
 
       <div className="input-bar">
-        <input
+        <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Type a message..."
-          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              sendMessage();
+            }
+          }}
         />
-        <button onClick={sendMessage}>Send</button>
+        <button onClick={sendMessage}>➤</button>
       </div>
     </div>
   );
