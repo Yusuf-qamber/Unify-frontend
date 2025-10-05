@@ -1,0 +1,127 @@
+.chat-sidebar {
+  width: 280px;
+  background: #ffffff;
+  border-right: 1px solid #e6e6e6;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  .sidebar-header {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+
+    input {
+      width: 100%;
+      margin-top: 8px;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 0.9rem;
+      background: #fafafa;
+    }
+  }
+
+  .chat-list {
+    overflow-y: auto;
+    flex: 1;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc transparent;
+  }
+
+  .chat-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #f3f3f3;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #f2f3f8;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+      flex-shrink: 0;
+      border: 2px solid #e0e0e0;
+    }
+
+    .chat-info {
+      flex: 1;
+      min-width: 0;
+
+      .username {
+        font-weight: 600;
+        color: #222;
+        display: flex;
+        align-items: center;
+
+        .online-dot {
+          width: 8px;
+          height: 8px;
+          background: #31d158;
+          border-radius: 50%;
+          margin-left: 5px;
+        }
+      }
+
+      .last-message {
+        font-size: 0.88rem;
+        color: #666;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 180px;
+      }
+    }
+  }
+
+  .no-results {
+    text-align: center;
+    color: #888;
+    padding: 20px;
+    font-size: 0.9rem;
+  }
+
+  .search-label {
+    padding: 8px 15px;
+    color: #555;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+}
+.chat-item {
+    position: relative;
+
+    .delete-btn {
+      border: none;
+      background: transparent;
+      color: #999;
+      font-size: 0.9rem;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 50%;
+      margin-left: 6px;
+      transition: all 0.2s ease;
+      opacity: 0;          
+      pointer-events: none; 
+    }
+
+    &:hover .delete-btn {
+      opacity: 1;          
+      pointer-events: auto;
+    }
+
+    .delete-btn:hover {
+      background: #ffe5e5; 
+      color: #e63946;      
+    }
+
+    .delete-btn:active {
+      transform: scale(0.9);
+    }
+  }
+

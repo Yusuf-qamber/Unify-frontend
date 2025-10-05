@@ -59,4 +59,18 @@ const deleteAccount = async () => {
   return res.json();
 };
 
-export { getProfile, updateProfile, deleteAccount };
+
+const getUserProfile = async (userId) => {
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${BASE_URL}/${userId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.error || `Failed to fetch user profile: ${res.status}`);
+  }
+  return res.json();
+};
+
+export { getProfile, getUserProfile, updateProfile, deleteAccount };
+
