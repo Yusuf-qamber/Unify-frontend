@@ -90,10 +90,30 @@ const NoteDetails = (props) => {
       
       <div className="card note-card">
         <h1>{note.title}</h1>
-        <p className="meta">
-          By: {note.owner?.username || "Unknown"} | Posted on:{" "}
-          {new Date(note.createdAt).toLocaleDateString()}
-        </p>
+<div className="note-header">
+  <div className="author-info-wrapper">
+    <Link to={`/profile/${note.owner?._id}`} className="author-info">
+      <img
+        src={
+          note.owner?.picture ||
+          "https://cdn-icons-png.flaticon.com/512/847/847969.png"
+        }
+        alt={`${note.owner?.username || "User"}'s avatar`}
+        className="author-avatar"
+      />
+      <span className="author-name">{note.owner?.username || "Unknown"}</span>
+    </Link>
+    <span className="post-date">
+      Posted on: {new Date(note.createdAt).toLocaleDateString()}
+    </span>
+  </div>
+</div>
+
+
+
+
+
+
         <p className="description">{note.description}</p>
 
         {note.file_url && (

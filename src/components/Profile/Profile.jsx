@@ -98,13 +98,13 @@ const Profile = ({ onSignOut }) => {
         <>
           {editing ? (
             <div className="edit-form">
-              <input
+              {/* <input
                 type="text"
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
                 placeholder="New Username"
-              />
+              /> */}
               <input
                 type="file"
                 name="picture"
