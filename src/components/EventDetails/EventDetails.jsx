@@ -97,14 +97,24 @@ const EventDetails = (props) => {
       <div className="event-card">
         <h2 className="title">{event.title}</h2>
 
-        <div className="meta">
-          <span>
-            By: <strong>{event.owner?.username || "Unknown"}</strong>
-          </span>
-          <span>
-            Posted on: {new Date(event.createdAt).toLocaleDateString()}
-          </span>
-        </div>
+<div className="event-header">
+  <div className="author-info-wrapper">
+    <Link to={`/profile/${event.owner?._id}`} className="author-info">
+      <img
+        src={
+          event.owner?.picture ||
+          "https://cdn-icons-png.flaticon.com/512/847/847969.png"
+        }
+        alt={`${event.owner?.username || "User"}'s avatar`}
+        className="author-avatar"
+      />
+      <span className="author-name">{event.owner?.username || "Unknown"}</span>
+    </Link>
+    <span className="post-date">
+      Posted on: {new Date(event.createdAt).toLocaleDateString()}
+    </span>
+  </div>
+</div>
 
         <p className="description">{event.description}</p>
         <p className="location">📍 {event.location}</p>

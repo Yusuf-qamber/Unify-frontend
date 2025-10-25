@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams,Link } from "react-router-dom";
 import axios from "axios";
 import socket from "../../services/socket";
 import "./CollegeChat.scss";
@@ -67,14 +67,17 @@ const CollegeChat = ({ user }) => {
       <div className="chat-container">
         {messages.map((m, i) => (
           <div
+          
             key={i}
             className={`message ${m.sender._id === user._id ? "me" : "other"}`}
           >
+            <Link to={`/profile/${m.sender._id}`}>
             <img
               src={m.sender.picture || "/assets/default.png"}
               alt="avatar"
               className="avatar"
             />
+            </Link>
             <div className="message-content">
               <div className="message-header">
                 <span className="username">{m.sender.username}</span>
