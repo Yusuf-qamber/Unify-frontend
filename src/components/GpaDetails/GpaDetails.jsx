@@ -10,21 +10,14 @@ const GpaDetails = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchGpa = async () => {
-      try {
-        const data = await gpaService.show(gpaId);
-        setGpa(data);
-      } catch (err) {
-        console.error("Failed to fetch GPA record:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchGpa();
+    gpaService.show(gpaId)
+      .then(data => setGpa(data))
+      .catch(err => console.error("Failed to fetch GPA record:", err))
+      .finally(() => setLoading(false));
   }, [gpaId]);
 
   const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete this GPA record?")) return;
+    if (!window.confirm("Delete this GPA record?")) return;
     try {
       await gpaService.remove(gpaId);
       navigate("/gpa");
@@ -39,26 +32,25 @@ const GpaDetails = () => {
   return (
     <main className="gpa-details-container">
       <header className="gpa-details-header">
-        <div className="header-content">
-          <h1 className="semester-title">{gpa.semester}</h1>
-          <div className="gpa-display">
-            <span className="gpa-label">Semester GPA</span>
-            <span className="gpa-value">{gpa.semesterGpa?.toFixed(2)}</span>
-          </div>
+        <h1 className="semester-title">{gpa.semester}</h1>
+        <div className="gpa-display">
+          <span>Semester GPA: {gpa.semesterGpa?.toFixed(2)}</span>
+          <span>Semester Major GPA: {gpa.majorGpa?.toFixed(2)}</span>
         </div>
       </header>
 
       <section className="courses-section">
         <h2 className="courses-title">Courses</h2>
         <div className="courses-grid">
-          {gpa.courses.map((course, idx) => (
+          {gpa.courses.map((c, idx) => (
             <div key={idx} className="course-card">
               <div className="course-icon">📘</div>
               <div className="course-info">
-                <h3 className="course-name">{course.name}</h3>
+                <h3 className="course-name">{c.name}</h3>
                 <div className="course-details">
-                  <span className="credit-hours">{course.creditHours} Credits</span>
-                  <span className="course-grade">Grade: {course.grade}</span>
+                  <span>{c.creditHours} Credits</span>
+                  <span>Grade: {c.grade}</span>
+                  
                 </div>
               </div>
             </div>
@@ -67,9 +59,7 @@ const GpaDetails = () => {
       </section>
 
       <div className="gpa-actions">
-        <Link to={`/gpa/${gpa._id}/edit`}>
-          <button className="btn-edit">✏ Edit GPA</button>
-        </Link>
+        <Link to={`/gpa/${gpa._id}/edit`}><button className="btn-edit">✏ Edit GPA</button></Link>
         <button className="btn-delete" onClick={handleDelete}>🗑 Delete GPA</button>
       </div>
     </main>

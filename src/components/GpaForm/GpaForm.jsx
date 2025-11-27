@@ -9,135 +9,77 @@ const GpaForm = () => {
 
   const [gpaRecord, setGpaRecord] = useState({
     semester: "",
-    courses: [{ name: "", creditHours: "", grade: "" }],
+    courses: [{ name: "", creditHours: "", grade: "", major: false }],
   });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const gradePoints = {
-    A: 4,
-    "A-": 3.67,
-    "B+": 3.33,
-    B: 3,
-    "B-": 2.67,
-    "C+": 2.33,
-    C: 2,
-    "C-": 1.67,
-    "D+": 1.33,
-    D: 1,
-    "D-": 0.67,
-    F: 0,
-  };
-
+  // Load GPA for editing
   useEffect(() => {
-    if (gpaId) {
-      const fetchGpa = async () => {
-        setLoading(true);
-        try {
-          const data = await gpaService.show(gpaId);
-          setGpaRecord(data);
-        } catch (err) {
-          console.error("Failed to fetch GPA record:", err);
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchGpa();
-    }
+    if (!gpaId) return;
+    setLoading(true);
+    gpaService.show(gpaId)
+      .then(data => {
+        const courses = data.courses.map(c => ({ ...c, major: !!c.major }));
+        setGpaRecord({ ...data, courses });
+      })
+      .catch(err => console.error("Failed to fetch GPA record:", err))
+      .finally(() => setLoading(false));
   }, [gpaId]);
 
+  // Validation
   const validateForm = () => {
     const newErrors = {};
+    if (!gpaRecord.semester.trim()) newErrors.semester = "Semester is required";
 
-    if (!gpaRecord.semester.trim()) {
-      newErrors.semester = "Semester is required";
-    }
-
-    gpaRecord.courses.forEach((course, index) => {
-      if (!course.name.trim()) {
-        newErrors[`courseName_${index}`] = "Course name is required";
-      }
-      if (!course.creditHours || course.creditHours <= 0) {
-        newErrors[`courseCredits_${index}`] = "Valid credit hours are required";
-      }
-      if (!course.grade) {
-        newErrors[`courseGrade_${index}`] = "Grade is required";
-      }
+    gpaRecord.courses.forEach((c, i) => {
+      if (!c.name.trim()) newErrors[`courseName_${i}`] = "Course name is required";
+      if (!c.creditHours || c.creditHours <= 0 || c.creditHours > 10)
+        newErrors[`courseCredits_${i}`] = "Credit hours must be 1-10";
+      if (!c.grade) newErrors[`courseGrade_${i}`] = "Grade is required";
     });
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
+  // Handlers
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setGpaRecord((prev) => ({ ...prev, [name]: value }));
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
-    }
+    setGpaRecord(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: "" }));
   };
-const handleCourseChange = (idx, field, value) => {
-  const updated = [...gpaRecord.courses];
 
-  if (field === "creditHours") {
-    updated[idx][field] = value === "" ? "" : Number(value);
-  } else {
-    updated[idx][field] = value;
-  }
+  const handleCourseChange = (idx, field, value) => {
+    const courses = [...gpaRecord.courses];
+    courses[idx][field] = field === "creditHours" ? Number(value) : value;
+    if (field === "major") courses[idx][field] = !!value; // ensure boolean
+    setGpaRecord(prev => ({ ...prev, courses }));
+    const errorKey = `course${field.charAt(0).toUpperCase() + field.slice(1)}_${idx}`;
+    if (errors[errorKey]) setErrors(prev => ({ ...prev, [errorKey]: "" }));
+  };
 
-  setGpaRecord((prev) => ({ ...prev, courses: updated }));
-  
-  // Clear error
-  const errorKey = `course${field.charAt(0).toUpperCase() + field.slice(1)}_${idx}`;
-  if (errors[errorKey]) setErrors(prev => ({ ...prev, [errorKey]: "" }));
-};
-
-  const addCourse = () => {
-    setGpaRecord((prev) => ({
+  const addCourse = () =>
+    setGpaRecord(prev => ({
       ...prev,
-      courses: [...prev.courses, { name: "", creditHours: "", grade: "" }],
+      courses: [...prev.courses, { name: "", creditHours: "", grade: "", major: false }]
     }));
-  };
 
   const removeCourse = (idx) => {
-    if (gpaRecord.courses.length > 1) {
-      setGpaRecord((prev) => ({
-        ...prev,
-        courses: prev.courses.filter((_, i) => i !== idx),
-      }));
-    }
+    if (gpaRecord.courses.length === 1) return;
+    setGpaRecord(prev => ({
+      ...prev,
+      courses: prev.courses.filter((_, i) => i !== idx)
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
-    let totalPoints = 0;
-let totalHours = 0;
-
-gpaRecord.courses.forEach(c => {
-  const grade = c.grade?.trim().toUpperCase();
-  const credits = parseFloat(c.creditHours?.toString().trim());
-
-  if (grade && !isNaN(credits) && credits > 0 && gradePoints[grade] !== undefined) {
-    totalPoints += gradePoints[grade] * credits;
-    totalHours += credits;
-  }
-});
-
-const gpa = totalHours > 0 ? +(totalPoints / totalHours).toFixed(2) : 0;
-;
+    if (!validateForm()) return;
 
     try {
-      if (gpaId) {
-        await gpaService.update(gpaId, { ...gpaRecord, semesterGpa: gpa });
-      } else {
-        await gpaService.create({ ...gpaRecord, semesterGpa: gpa });
-      }
+      if (gpaId) await gpaService.update(gpaId, gpaRecord);
+      else await gpaService.create(gpaRecord);
       navigate("/gpa");
     } catch (err) {
       console.error("Failed to save GPA record:", err);
@@ -149,14 +91,8 @@ const gpa = totalHours > 0 ? +(totalPoints / totalHours).toFixed(2) : 0;
   return (
     <main className="gpa-form-container">
       <div className="form-header">
-        <h1 className="form-title">
-          {gpaId ? "Edit GPA Record" : "Create New GPA Record"}
-        </h1>
-        <p className="form-subtitle">
-          {gpaId
-            ? "Update your semester information and courses"
-            : "Add your semester information and courses to calculate GPA"}
-        </p>
+        <h1 className="form-title">{gpaId ? "Edit GPA Record" : "Create New GPA Record"}</h1>
+        <p className="form-subtitle">{gpaId ? "Update semester & courses" : "Add semester & courses to calculate GPA"}</p>
       </div>
 
       <form onSubmit={handleSubmit} className="gpa-form">
@@ -169,12 +105,10 @@ const gpa = totalHours > 0 ? +(totalPoints / totalHours).toFixed(2) : 0;
               value={gpaRecord.semester}
               onChange={handleChange}
               className={`form-input ${errors.semester ? "error" : ""}`}
-              placeholder="e.g., Fall 2024, Spring 2025"
+              placeholder="e.g., Fall 2024"
               required
             />
-            {errors.semester && (
-              <span className="error-message">{errors.semester}</span>
-            )}
+            {errors.semester && <span className="error-message">{errors.semester}</span>}
           </label>
         </div>
 
@@ -183,103 +117,50 @@ const gpa = totalHours > 0 ? +(totalPoints / totalHours).toFixed(2) : 0;
           <div className="courses-list">
             {gpaRecord.courses.map((course, idx) => (
               <div key={idx} className="course-row">
-                <div className="course-input-group">
-                  <div className="input-field">
-                    <input
-                      placeholder="Course Name"
-                      value={course.name}
-                      onChange={(e) =>
-                        handleCourseChange(idx, "name", e.target.value)
-                      }
-                      className={`course-input ${
-                        errors[`courseName_${idx}`] ? "error" : ""
-                      }`}
-                      required
-                    />
-                    {errors[`courseName_${idx}`] && (
-                      <span className="error-message">
-                        {errors[`courseName_${idx}`]}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="input-field">
-                    <input
-                      type="number"
-                      placeholder="Credit Hours"
-                      value={course.creditHours}
-                      onChange={(e) =>
-                        handleCourseChange(idx, "creditHours", e.target.value)
-                      }
-                      className={`course-input ${
-                        errors[`courseCredits_${idx}`] ? "error" : ""
-                      }`}
-                      min="1"
-                      max="10"
-                      required
-                    />
-                    {errors[`courseCredits_${idx}`] && (
-                      <span className="error-message">
-                        {errors[`courseCredits_${idx}`]}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="input-field">
-                    <select
-                      value={course.grade}
-                      onChange={(e) =>
-                        handleCourseChange(idx, "grade", e.target.value)
-                      }
-                      className={`course-select ${
-                        errors[`courseGrade_${idx}`] ? "error" : ""
-                      }`}
-                      required
-                    >
-                      <option value="">Select Grade</option>
-                      {Object.keys(gradePoints).map((g) => (
-                        <option key={g} value={g}>
-                          {g}
-                        </option>
-                      ))}
-                    </select>
-                    {errors[`courseGrade_${idx}`] && (
-                      <span className="error-message">
-                        {errors[`courseGrade_${idx}`]}
-                      </span>
-                    )}
-                  </div>
-
-                  <button
-                    type="button"
-                    className="btn-remove-course"
-                    onClick={() => removeCourse(idx)}
-                    disabled={gpaRecord.courses.length === 1}
-                  >
-                    ✖
-                  </button>
-                </div>
+                <input
+                  placeholder="Course Name"
+                  value={course.name}
+                  onChange={e => handleCourseChange(idx, "name", e.target.value)}
+                  className={`course-input ${errors[`courseName_${idx}`] ? "error" : ""}`}
+                  required
+                />
+                <input
+                  type="number"
+                  placeholder="Credit Hours"
+                  value={course.creditHours}
+                  onChange={e => handleCourseChange(idx, "creditHours", e.target.value)}
+                  className={`course-input ${errors[`courseCredits_${idx}`] ? "error" : ""}`}
+                  min={1} max={10}
+                  required
+                />
+                <select
+                  value={course.grade}
+                  onChange={e => handleCourseChange(idx, "grade", e.target.value)}
+                  className={`course-select ${errors[`courseGrade_${idx}`] ? "error" : ""}`}
+                  required
+                >
+                  <option value="">Select Grade</option>
+                  {["A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"].map(g => (
+                    <option key={g} value={g}>{g}</option>
+                  ))}
+                </select>
+                <label className="major-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={course.major}
+                    onChange={e => handleCourseChange(idx, "major", e.target.checked)}
+                  />  Major
+                </label>
+                <button type="button" className="btn-remove-course" onClick={() => removeCourse(idx)} disabled={gpaRecord.courses.length === 1}>✖</button>
               </div>
             ))}
           </div>
-
-          <button type="button" className="btn-add-course" onClick={addCourse}>
-            <span className="plus-icon">+</span>
-            Add Another Course
-          </button>
+          <button type="button" className="btn-add-course" onClick={addCourse}>+ Add Course</button>
         </div>
 
         <div className="form-actions">
-          <button
-            type="button"
-            className="btn-cancel"
-            onClick={() => navigate("/gpa")}
-          >
-            Cancel
-          </button>
-          <button type="submit" className="btn-submit">
-            {gpaId ? "Update GPA Record" : "Create GPA Record"}
-          </button>
+          <button type="button" className="btn-cancel" onClick={() => navigate("/gpa")}>Cancel</button>
+          <button type="submit" className="btn-submit">{gpaId ? "Update GPA" : "Create GPA"}</button>
         </div>
       </form>
     </main>
