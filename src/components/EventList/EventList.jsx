@@ -13,6 +13,10 @@ const EventList = (props) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // --- search + sort state ---
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("date");
+
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -27,48 +31,80 @@ const EventList = (props) => {
     fetchEvents();
   }, [college]);
 
+  // --- filtered + sorted events ---
+  const filteredEvents = events
+    .filter(
+      (event) =>
+        event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        event.owner?.username.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+useEffect(() => {
+  // wait a tick to allow the DOM to update
+  const timer = setTimeout(() => {
+    window.dispatchEvent(new Event("resize"));
+  }, 50);
+
+  return () => clearTimeout(timer);
+}, [filteredEvents.length]);
+
   if (loading) return <p>Loading...</p>;
 
   return (
-<main className="event-list-container">
-        <h1>{college === "it" ? college.toLocaleUpperCase() : college} Events</h1>
+    <main className="event-list-container">
+      <h1>{college === "it" ? college.toLocaleUpperCase() : college} Events</h1>
 
-  {props.user && (
-    <div className="add-event">
-      <Link to={`/${college}/events/new`}>Add an Event</Link>
-    </div>
-  )}
+      {props.user && (
+        <div className="add-event">
+          <Link to={`/${college}/events/new`}>Add an Event</Link>
+        </div>
+      )}
 
-  {!events.length ? (
-    <p>No events found in {college}</p>
-  ) : (
-    <div className="event-window">
-      <div className="event-grid">
-        {events.map((event) => (
-          <div key={event._id} className="event-card-window">
-            <h2>{event.title}</h2>
-            <span>
-              {event.owner?.username} <hr /> {new Date(event.createdAt).toLocaleDateString()}
-            </span>
+      {/* ---  Search  --- */}
+      <div className="event-filter-bar">
+        <input
+          type="text"
+          className="event-search-input"
+          placeholder="Search events..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
 
-            <div className="event-map">
-              <MapBox
-                coordinates={event.coordinates || { lat: 26.2235, lng: 50.5876 }}
-                readOnly={true}
-                onLocationChange={() => {}}
-              />
-            </div>
-
-            <Link to={`/${college}/events/${event._id}`} className="details-link">
-              View Details
-            </Link>
-          </div>
-        ))}
       </div>
-    </div>
-  )}
-</main>
 
+      {!filteredEvents.length ? (
+        <p>No events found in {college}</p>
+      ) : (
+        <div className="event-window">
+          <div className="event-grid">
+            {filteredEvents.map((event) => (
+              <div key={event._id} className="event-card-window">
+                <h2>{event.title}</h2>
+                <span>
+                  {event.owner?.username} <hr />{" "}
+                  {new Date(event.createdAt).toLocaleDateString()}
+                </span>
+
+                {/* --- MapBox --- */}
+                <div className="event-map">
+                  <MapBox
+                    coordinates={event.coordinates || { lat: 26.2235, lng: 50.5876 }}
+                    readOnly={true}
+                    onLocationChange={() => {}}
+                  />
+                </div>
+
+                <Link
+                  to={`/${college}/events/${event._id}`}
+                  className="details-link"
+                >
+                  View Details
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </main>
   );
 };
 

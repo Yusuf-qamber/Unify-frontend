@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import * as profileservice from "../../services/profileService";
 import { confirm } from "material-ui-confirm";
-import { useNavigate, useParams,Link } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import "./Profile.scss";
 
-
-
-const Profile = ({ onSignOut }) => {
+const Profile = ({ onSignOut, user }) => {
   const navigate = useNavigate();
-  const { userId } = useParams(); 
+  const { userId } = useParams();
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -20,7 +18,6 @@ const Profile = ({ onSignOut }) => {
       try {
         let data;
         if (userId) {
-
           data = await profileservice.getUserProfile(userId);
         } else {
           data = await profileservice.getProfile();
@@ -59,12 +56,22 @@ const Profile = ({ onSignOut }) => {
     try {
       const { confirmed } = await confirm({
         title: "Are You Sure?",
-        description: <span style={{ fontWeight: 'bold' }}>This account will be deleted permanently!</span>,
+        description: (
+          <span style={{ fontWeight: "bold" }}>
+            This account will be deleted permanently!
+          </span>
+        ),
         confirmationText: "Delete",
         cancellationText: "Cancel",
-        confirmationButtonProps: { style: { backgroundColor: '#e74c3c', color: '#fff' } },
-        cancellationButtonProps: { style: { backgroundColor: '#ccc', color: '#333' } },
-        dialogProps: { PaperProps: { style: { borderRadius: '1rem', padding: '1rem' } } },
+        confirmationButtonProps: {
+          style: { backgroundColor: "#e74c3c", color: "#fff" },
+        },
+        cancellationButtonProps: {
+          style: { backgroundColor: "#ccc", color: "#333" },
+        },
+        dialogProps: {
+          PaperProps: { style: { borderRadius: "1rem", padding: "1rem" } },
+        },
       });
 
       if (!confirmed) return;
@@ -91,26 +98,34 @@ const Profile = ({ onSignOut }) => {
         <div className="profile-info">
           <p><strong>Username:</strong> {profile.username}</p>
           <p><strong>Email:</strong> {profile.email}</p>
+
+          {/* Message Privately button */}
+          {userId && userId !== user?._id && (
+            <button
+              className="message-btn"
+              onClick={() =>
+                navigate("/chat", {
+                  state: {
+                    preselectedUser: {
+                      _id: profile._id,
+                      username: profile.username,
+                      picture: profile.picture,
+                    },
+                  },
+                })
+              }
+            >
+              Message Privately
+            </button>
+          )}
         </div>
       </div>
 
-      {!userId && ( 
+      {!userId && (
         <>
           {editing ? (
             <div className="edit-form">
-              {/* <input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                placeholder="New Username"
-              /> */}
-              <input
-                type="file"
-                name="picture"
-                accept="image/*"
-                onChange={handleChange}
-              />
+              <input type="file" name="picture" accept="image/*" onChange={handleChange} />
               <div className="form-buttons">
                 <button onClick={handleSave}>Save</button>
                 <button onClick={() => setEditing(false)}>Cancel</button>
@@ -119,7 +134,6 @@ const Profile = ({ onSignOut }) => {
           ) : (
             <button className="edit-profile-btn" onClick={() => setEditing(true)}>Edit Profile</button>
           )}
-
           <button className="delete-button" onClick={handleDelete}>Delete Account</button>
         </>
       )}

@@ -102,7 +102,8 @@
 
   .edit-profile-btn {
     display: inline-block;
-    margin-bottom: 2rem;
+    margin: 2rem;
+
     background-color: #4a90e2;
     color: #fff;
     font-size: 1.1rem;
@@ -202,5 +203,23 @@
         width: 100%;
       }
     }
+  }
+}
+
+
+.message-btn {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #0056b3;
   }
 }

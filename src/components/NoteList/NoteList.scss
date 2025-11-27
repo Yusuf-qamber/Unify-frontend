@@ -253,3 +253,40 @@
     font-size: var(--text-xs);
   }
 }
+.note-filter-bar {
+  display: flex;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  flex-wrap: wrap;
+
+  select.note-sort-select {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid #ccc;
+    outline: none;
+    transition: all 0.3s ease;
+    flex: 0 0 180px; 
+  }
+
+  input.note-search-input {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid #ccc;
+    outline: none;
+    transition: all 0.3s ease;
+    flex: 1 1 200px; 
+  }
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: var(--space-3);
+
+    select.note-sort-select,
+    input.note-search-input {
+      flex: 1 1 100%;
+      font-size: 0.95rem;
+    }
+  }
+}

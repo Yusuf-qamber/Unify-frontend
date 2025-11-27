@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useLocation } from "react-router-dom";
 import "./ChatPage.scss";
 import Sidebar from "../Sidebar/Sidebar";
 import PrivateChat from "../PrivateChat/PrivateChat";
@@ -6,17 +7,26 @@ import * as chatService from "../../services/chatService";
 import { confirm } from "material-ui-confirm";
 
 const ChatPage = ({ user, socket, onlineUsers }) => {
+  const location = useLocation();
   const [conversations, setConversations] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 768);
 
-  
+  // Detect mobile view
   useEffect(() => {
     const handleResize = () => setIsMobileView(window.innerWidth <= 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Preselect user from Profile.jsx button
+  useEffect(() => {
+    if (location.state?.preselectedUser) {
+      setSelectedUser(location.state.preselectedUser);
+    }
+  }, [location.state]);
+
+  // Fetch conversations
   const fetchConversations = useCallback(async () => {
     try {
       const data = await chatService.getConversations();
@@ -30,6 +40,7 @@ const ChatPage = ({ user, socket, onlineUsers }) => {
     fetchConversations();
   }, [fetchConversations]);
 
+  // Socket listeners
   useEffect(() => {
     if (!socket || !user) return;
 
@@ -67,40 +78,27 @@ const ChatPage = ({ user, socket, onlineUsers }) => {
     };
   }, [socket, user, selectedUser]);
 
+  // Delete conversation
   const handleDeleteConversation = async (userId) => {
     try {
       const { confirmed } = await confirm({
         title: "Are You Sure?",
-        description: (
-          <span style={{ fontWeight: "bold" }}>
-            This chat will be deleted permanently!
-          </span>
-        ),
+        description: <span style={{ fontWeight: "bold" }}>This chat will be deleted permanently!</span>,
         confirmationText: "Delete",
         cancellationText: "Cancel",
-        confirmationButtonProps: {
-          style: { backgroundColor: "#e74c3c", color: "#fff" },
-        },
-        cancellationButtonProps: {
-          style: { backgroundColor: "#ccc", color: "#333" },
-        },
-        dialogProps: {
-          PaperProps: { style: { borderRadius: "1rem", padding: "1rem" } },
-        },
+        confirmationButtonProps: { style: { backgroundColor: "#e74c3c", color: "#fff" } },
+        cancellationButtonProps: { style: { backgroundColor: "#ccc", color: "#333" } },
+        dialogProps: { PaperProps: { style: { borderRadius: "1rem", padding: "1rem" } } },
       });
 
       if (!confirmed) return;
+
       await chatService.deleteConversation(userId);
-      setConversations((prev) =>
-        prev.filter((c) => c.user._id !== userId)
-      );
+      setConversations((prev) => prev.filter((c) => c.user._id !== userId));
       if (selectedUser && selectedUser._id === userId) {
         setSelectedUser(null);
       }
-      socket.emit("deleteConversation", {
-        userId: user._id,
-        otherUserId: userId,
-      });
+      socket.emit("deleteConversation", { userId: user._id, otherUserId: userId });
     } catch (err) {
       console.error("Error deleting conversation:", err);
     }
@@ -109,11 +107,7 @@ const ChatPage = ({ user, socket, onlineUsers }) => {
   return (
     <div className={`chat-page ${isMobileView ? "mobile" : ""}`}>
       {/* Sidebar */}
-      <div
-        className={`sidebar-wrapper ${
-          selectedUser && isMobileView ? "hidden" : ""
-        }`}
-      >
+      <div className={`sidebar-wrapper ${selectedUser && isMobileView ? "hidden" : ""}`}>
         <Sidebar
           conversations={conversations}
           onSelectUser={(u) => setSelectedUser(u)}
@@ -124,11 +118,7 @@ const ChatPage = ({ user, socket, onlineUsers }) => {
       </div>
 
       {/* Private Chat */}
-      <div
-        className={`chat-wrapper ${
-          !selectedUser && isMobileView ? "hidden" : ""
-        }`}
-      >
+      <div className={`chat-wrapper ${!selectedUser && isMobileView ? "hidden" : ""}`}>
         {selectedUser ? (
           <PrivateChat
             user={user}

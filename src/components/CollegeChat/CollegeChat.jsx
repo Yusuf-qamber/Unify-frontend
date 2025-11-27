@@ -61,7 +61,7 @@ const CollegeChat = ({ user }) => {
   return (
     <div className="college-chat-professional">
       <header>
-        <h2>💬 {college.toUpperCase()} College Chat</h2>
+        <h2>💬 {college.toUpperCase()} CHAT</h2>
       </header>
 
       <div className="chat-container">
@@ -80,7 +80,8 @@ const CollegeChat = ({ user }) => {
             </Link>
             <div className="message-content">
               <div className="message-header">
-                <span className="username">{m.sender.username}</span>
+                <Link to={`/profile/${m.sender._id}`}>                
+                <span className="username">{m.sender.username}</span></Link>
                 <span className="time">{new Date(m.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
               </div>
               <div className="text">{m.content}</div>

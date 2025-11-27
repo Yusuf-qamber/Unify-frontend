@@ -13,7 +13,7 @@ const College = () => {
 
   return (
     <main className="college-page">
-      <h1 className="college-title">{college.toUpperCase()} College</h1>
+      <h1 className="college-title">{college.toUpperCase()}</h1>
 
       <section className="college-grid">
         <Link to={`/${college}/notes`} className="college-card">

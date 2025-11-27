@@ -77,20 +77,21 @@ const GpaForm = () => {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
+const handleCourseChange = (idx, field, value) => {
+  const updated = [...gpaRecord.courses];
 
-  const handleCourseChange = (idx, field, value) => {
-    const updated = [...gpaRecord.courses];
+  if (field === "creditHours") {
+    updated[idx][field] = value === "" ? "" : Number(value);
+  } else {
     updated[idx][field] = value;
-    setGpaRecord((prev) => ({ ...prev, courses: updated }));
+  }
 
-    // Clear error when user starts typing
-    const errorKey = `course${
-      field.charAt(0).toUpperCase() + field.slice(1)
-    }_${idx}`;
-    if (errors[errorKey]) {
-      setErrors((prev) => ({ ...prev, [errorKey]: "" }));
-    }
-  };
+  setGpaRecord((prev) => ({ ...prev, courses: updated }));
+  
+  // Clear error
+  const errorKey = `course${field.charAt(0).toUpperCase() + field.slice(1)}_${idx}`;
+  if (errors[errorKey]) setErrors(prev => ({ ...prev, [errorKey]: "" }));
+};
 
   const addCourse = () => {
     setGpaRecord((prev) => ({
@@ -115,16 +116,21 @@ const GpaForm = () => {
       return;
     }
 
-    // calculate GPA
-let totalPoints = 0;
+    let totalPoints = 0;
 let totalHours = 0;
+
 gpaRecord.courses.forEach(c => {
-  const gp = gradePoints[c.grade?.trim().toUpperCase()] || 0;
-  const credits = parseFloat(c.creditHours?.toString().trim()) || 0;
-  totalPoints += gp * credits;
-  totalHours += credits;
+  const grade = c.grade?.trim().toUpperCase();
+  const credits = parseFloat(c.creditHours?.toString().trim());
+
+  if (grade && !isNaN(credits) && credits > 0 && gradePoints[grade] !== undefined) {
+    totalPoints += gradePoints[grade] * credits;
+    totalHours += credits;
+  }
 });
+
 const gpa = totalHours > 0 ? +(totalPoints / totalHours).toFixed(2) : 0;
+;
 
     try {
       if (gpaId) {

@@ -146,3 +146,68 @@
   0%, 100% { opacity: 1; }
   50% { opacity: 0.7; }
 }
+
+
+/* --- Filter Bar --- */
+.note-filter-bar,
+.event-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  align-items: center;
+}
+
+/* --- Search Input --- */
+.note-search-input,
+.event-search-input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: 0.2s all;
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+  }
+}
+
+/* --- Sort Dropdown --- */
+.note-sort-select,
+.event-sort-select {
+  flex: 0 0 150px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 0.95rem;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+  }
+}
+
+/* --- Responsive --- */
+@media (max-width: 480px) {
+  .note-filter-bar,
+  .event-filter-bar {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .note-sort-select,
+  .event-sort-select {
+    width: 100%;
+  }
+}
+
