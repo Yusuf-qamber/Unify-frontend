@@ -54,9 +54,6 @@ const GpaList = () => {
   if (loading)
     return <p className="loading-msg">Loading GPA records...</p>;
 
-  if (!gpaRecords.length)
-    return <p className="no-gpa-msg">No GPA records found.</p>;
-
   return (
     <main className="gpa-list-container">
       <header className="gpa-list-header">
@@ -74,29 +71,33 @@ const GpaList = () => {
         </div>
       </header>
 
-      <ul className="gpa-list">
-        {gpaRecords.map((record) => (
-          <li key={record._id} className="gpa-card">
-            <Link to={`/gpa/${record._id}`} className="gpa-card-link">
-              <div className="gpa-header">
-                <h2 className="semester-name">{record.semester}</h2>
-                <span className="gpa-status">
-                  GPA: {record.semesterGpa?.toFixed(2) || "N/A"} | 
-                  Major GPA: {record.majorGpa?.toFixed(2) || "N/A"}
-                </span>
-              </div>
-              <div className="gpa-footer">
-                <span className="course-count">
-                  Courses: {record.courses.length}
-                </span>
-                <span className="created-date">
-                  Created: {new Date(record.createdAt).toLocaleDateString()}
-                </span>
-              </div>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {gpaRecords.length === 0 ? (
+        <p className="no-gpa-msg">No GPA records found.</p>
+      ) : (
+        <ul className="gpa-list">
+          {gpaRecords.map((record) => (
+            <li key={record._id} className="gpa-card">
+              <Link to={`/gpa/${record._id}`} className="gpa-card-link">
+                <div className="gpa-header">
+                  <h2 className="semester-name">{record.semester}</h2>
+                  <span className="gpa-status">
+                    GPA: {record.semesterGpa?.toFixed(2) || "N/A"} | 
+                    Major GPA: {record.majorGpa?.toFixed(2) || "N/A"}
+                  </span>
+                </div>
+                <div className="gpa-footer">
+                  <span className="course-count">
+                    Courses: {record.courses.length}
+                  </span>
+                  <span className="created-date">
+                    Created: {new Date(record.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </main>
   );
 };
