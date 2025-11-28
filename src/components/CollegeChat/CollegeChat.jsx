@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { useParams,Link } from "react-router-dom";
-import axios from "axios";
+import { useParams, Link } from "react-router-dom";
 import socket from "../../services/socket";
+import * as chatService from "../../services/chatService";
 import "./CollegeChat.scss";
 
 const CollegeChat = ({ user }) => {
@@ -17,17 +17,8 @@ const CollegeChat = ({ user }) => {
     socket.emit("joinCollege", college);
 
     const fetchMessages = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:3000/chat/college/${college}`,
-          {
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-          }
-        );
-        setMessages(res.data);
-      } catch (err) {
-        console.error(err);
-      }
+      const data = await chatService.getCollegeMessages(college);
+      setMessages(data);
     };
 
     fetchMessages();
@@ -35,10 +26,11 @@ const CollegeChat = ({ user }) => {
 
   // Listen for new messages
   useEffect(() => {
-    socket.on("receiveCollegeMessage", (msg) => {
+    const handleMessage = (msg) => {
       if (msg.college === college) setMessages((prev) => [...prev, msg]);
-    });
-    return () => socket.off("receiveCollegeMessage");
+    };
+    socket.on("receiveCollegeMessage", handleMessage);
+    return () => socket.off("receiveCollegeMessage", handleMessage);
   }, [college]);
 
   // Auto-scroll
@@ -46,7 +38,7 @@ const CollegeChat = ({ user }) => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (!text.trim()) return;
 
     socket.emit("sendCollegeMessage", {
@@ -66,23 +58,18 @@ const CollegeChat = ({ user }) => {
 
       <div className="chat-container">
         {messages.map((m, i) => (
-          <div
-          
-            key={i}
-            className={`message ${m.sender._id === user._id ? "me" : "other"}`}
-          >
+          <div key={i} className={`message ${m.sender._id === user._id ? "me" : "other"}`}>
             <Link to={`/profile/${m.sender._id}`}>
-            <img
-              src={m.sender.picture || "/assets/default.png"}
-              alt="avatar"
-              className="avatar"
-            />
+              <img src={m.sender.picture || "/assets/default.png"} alt="avatar" className="avatar" />
             </Link>
             <div className="message-content">
               <div className="message-header">
-                <Link to={`/profile/${m.sender._id}`}>                
-                <span className="username">{m.sender.username}</span></Link>
-                <span className="time">{new Date(m.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                <Link to={`/profile/${m.sender._id}`}>
+                  <span className="username">{m.sender.username}</span>
+                </Link>
+                <span className="time">
+                  {new Date(m.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                </span>
               </div>
               <div className="text">{m.content}</div>
             </div>

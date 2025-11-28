@@ -77,3 +77,18 @@ export const deleteConversation = async (userId) => {
     return null;
   }
 };
+
+
+// Get college messages
+export const getCollegeMessages = async (college) => {
+  try {
+    const res = await fetch(`${BASE_URL}/college/${college}`, {
+      headers: getAuthHeaders(),
+    });
+    if (!res.ok) throw new Error("Failed to fetch college messages");
+    return await res.json();
+  } catch (err) {
+    console.error("chatService.getCollegeMessages error:", err);
+    return [];
+  }
+};
