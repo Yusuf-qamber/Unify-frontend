@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
+import * as chatService from "../../services/chatService"; // <-- use service
 import socket from "../../services/socket";
-import * as chatService from "../../services/chatService";
 import "./CollegeChat.scss";
 
 const CollegeChat = ({ user }) => {
@@ -18,7 +18,7 @@ const CollegeChat = ({ user }) => {
 
     const fetchMessages = async () => {
       const data = await chatService.getCollegeMessages(college);
-      setMessages(data);
+      setMessages(data || []);
     };
 
     fetchMessages();
@@ -26,11 +26,11 @@ const CollegeChat = ({ user }) => {
 
   // Listen for new messages
   useEffect(() => {
-    const handleMessage = (msg) => {
+    const handleReceive = (msg) => {
       if (msg.college === college) setMessages((prev) => [...prev, msg]);
     };
-    socket.on("receiveCollegeMessage", handleMessage);
-    return () => socket.off("receiveCollegeMessage", handleMessage);
+    socket.on("receiveCollegeMessage", handleReceive);
+    return () => socket.off("receiveCollegeMessage", handleReceive);
   }, [college]);
 
   // Auto-scroll
@@ -41,11 +41,15 @@ const CollegeChat = ({ user }) => {
   const sendMessage = async () => {
     if (!text.trim()) return;
 
+    // send via socket
     socket.emit("sendCollegeMessage", {
       sender: user._id,
       college,
       content: text,
     });
+
+    // optionally save via API (so new users see it)
+    // await chatService.sendCollegeMessage(college, text);
 
     setText("");
   };
@@ -58,9 +62,16 @@ const CollegeChat = ({ user }) => {
 
       <div className="chat-container">
         {messages.map((m, i) => (
-          <div key={i} className={`message ${m.sender._id === user._id ? "me" : "other"}`}>
+          <div
+            key={i}
+            className={`message ${m.sender._id === user._id ? "me" : "other"}`}
+          >
             <Link to={`/profile/${m.sender._id}`}>
-              <img src={m.sender.picture || "/assets/default.png"} alt="avatar" className="avatar" />
+              <img
+                src={m.sender.picture || "/assets/default.png"}
+                alt="avatar"
+                className="avatar"
+              />
             </Link>
             <div className="message-content">
               <div className="message-header">
@@ -68,7 +79,10 @@ const CollegeChat = ({ user }) => {
                   <span className="username">{m.sender.username}</span>
                 </Link>
                 <span className="time">
-                  {new Date(m.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                  {new Date(m.createdAt).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
                 </span>
               </div>
               <div className="text">{m.content}</div>
