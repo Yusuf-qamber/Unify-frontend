@@ -92,17 +92,21 @@ const NoteDetails = (props) => {
         <h1>{note.title}</h1>
 <div className="note-header">
   <div className="author-info-wrapper">
-    <Link to={`/profile/${note.owner?._id}`} className="author-info">
-      <img
-        src={
-          note.owner?.picture ||
-          "https://cdn-icons-png.flaticon.com/512/847/847969.png"
-        }
-        alt={`${note.owner?.username || "User"}'s avatar`}
-        className="author-avatar"
-      />
-      <span className="author-name">{note.owner?.username || "Unknown"}</span>
-    </Link>
+    <Link
+  to={props.user ? `/profile/${note.owner?._id}` : "/sign-in"}
+  className="author-info"
+>
+  <img
+    src={
+      note.owner?.picture ||
+      "https://cdn-icons-png.flaticon.com/512/847/847969.png"
+    }
+    alt={`${note.owner?.username || "User"}'s avatar`}
+    className="author-avatar"
+  />
+  <span className="author-name">{note.owner?.username || "Unknown"}</span>
+</Link>
+
     <span className="post-date">
       Posted on: {new Date(note.createdAt).toLocaleDateString()}
     </span>

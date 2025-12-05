@@ -22,27 +22,31 @@ const NavBar = ({ user, handleSignOut }) => {
       </button>
 
       <ul className={`navbar__menu ${menuOpen ? "show" : ""}`}>
-        {user ? (
-          <>
-            <li><Link to="/schedule">My Schedule</Link></li>
-            <li><Link to="/assignments">Assignments</Link></li>
-            <li><Link to="/gpa">GPA Calculator</Link></li>
-            <li><Link to="/chat">Chat</Link></li>
-            {/* <li className="navbar__welcome">Hi, {user.username}</li> */}
-            <li className="navbar__welcome"><Link to="/profile">Hi, {user.username}</Link></li>
-            <li><Link to="/">Home</Link></li>
-            <li>
-              <Link to="/" onClick={handleSignOut}>
-                Sign Out
-              </Link>
-            </li>
-          </>
-        ) : (
-          <>
-            <li><Link to="/sign-up">Sign Up</Link></li>
-            <li><Link to="/sign-in">Sign In</Link></li>
-          </>
-        )}
+        <li><Link to={user ? "/schedule" : "/sign-in"}>My Schedule</Link></li>
+<li><Link to={user ? "/assignments" : "/sign-in"}>Assignments</Link></li>
+<li><Link to={user ? "/gpa" : "/sign-in"}>GPA Calculator</Link></li>
+<li><Link to={user ? "/chat" : "/sign-in"}>Chat</Link></li>
+
+<li className="navbar__welcome">
+  <Link to={user ? "/profile" : "/sign-in"}>
+    Hi, {user ? user.username : "Guest"}
+  </Link>
+</li>
+{!user&&(
+  <>
+  <li><Link to="/sign-up">Sign Up</Link></li>
+<li><Link to="/sign-in">Sign In</Link></li>
+</>
+)}
+<li><Link to="/">Home</Link></li>
+
+
+{user && (
+  <li>
+    <Link to="/" onClick={handleSignOut}>Sign Out</Link>
+  </li>
+)}
+
       </ul>
     </nav>
   );

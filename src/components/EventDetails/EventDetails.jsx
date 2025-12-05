@@ -99,7 +99,7 @@ const EventDetails = (props) => {
 
 <div className="event-header">
   <div className="author-info-wrapper">
-    <Link to={`/profile/${event.owner?._id}`} className="author-info">
+    <Link to={props.user ? `/profile/${event.owner?._id}`: "/sign-in"} className="author-info">
       <img
         src={
           event.owner?.picture ||

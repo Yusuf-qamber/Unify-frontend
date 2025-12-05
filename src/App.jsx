@@ -155,7 +155,7 @@ if (socket && user?._id) {
           path="/sign-in"
           element={<SignIn handleSignIn={handleSignIn} user={user} setUser={setUser} />}
         />
-        <Route path="/:college" element={<College />} />
+        <Route path="/:college" element={<College user={user}/> }  />
         <Route path="/:college/notes" element={<NoteList user={user} />} />
         <Route
           path="/:college/notes/:noteId"

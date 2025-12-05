@@ -57,11 +57,15 @@ const NoteList = (props) => {
     <main className="note-list-container">
       <h1>{college === "it" ? college.toLocaleUpperCase() : college} Notes</h1>
 
-      {props.user && (
+      {props.user ? (
         <li>
+          
           <Link to={`/${college}/notes/new`}>Add a Note</Link>
         </li>
-      )}
+      ):(<li><Link to={`/sign-in`}>Add a Note</Link>
+
+      
+        </li>)}
 
       {/* --- Added Search + Sort --- */}
       <div className="note-filter-bar">
