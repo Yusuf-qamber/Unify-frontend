@@ -63,6 +63,7 @@ $radius: 6px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 1.2rem;
+    justify-items: center;
 
     .day-column {
       background: $light-bg;
@@ -80,6 +81,8 @@ $radius: 6px;
 
       .course-card {
         @extend .card;
+        width: 100%;
+        max-width: 220px;  
 
         .course-content {
           text-align: center;
@@ -106,3 +109,5 @@ $radius: 6px;
     }
   }
 }
+
+
