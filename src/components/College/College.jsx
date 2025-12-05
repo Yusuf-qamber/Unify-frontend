@@ -4,7 +4,7 @@ import "./College.scss";
 
 const validColleges = ["it", "business", "science", "law", "engineering", "art"];
 
-const College = () => {
+const College = ({user}) => {
   const { college } = useParams();
 
   if (!validColleges.includes(college)) {
@@ -29,13 +29,22 @@ const College = () => {
             <p>Stay updated with upcoming college events.</p>
           </div>
         </Link>
+    {user ? (
+  <Link to={`/${college}/chat`} className="college-card">
+    <div className="college-card__content">
+      <h2>💬 Chat</h2>
+      <p>Join live chat with {college} students.</p>
+    </div>
+  </Link>
+) : (
+  <Link to="/sign-in" className="college-card">
+    <div className="college-card__content">
+      <h2>💬 Chat</h2>
+      <p>You must sign in to access the chat.</p>
+    </div>
+  </Link>
+)}
 
-       <Link to={`/${college}/chat`} className="college-card">
-  <div className="college-card__content">
-    <h2>💬 Chat</h2>
-    <p>Join live chat with {college} students.</p>
-  </div>
-</Link>
 
       </section>
     </main>

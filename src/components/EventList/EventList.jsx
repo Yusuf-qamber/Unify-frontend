@@ -53,11 +53,13 @@ useEffect(() => {
     <main className="event-list-container">
       <h1>{college === "it" ? college.toLocaleUpperCase() : college} Events</h1>
 
-      {props.user && (
+      {props.user ? (
         <div className="add-event">
           <Link to={`/${college}/events/new`}>Add an Event</Link>
         </div>
-      )}
+      ):(<div className="add-event">
+          <Link to={`/sign-in`}>Add an Event</Link>
+        </div>)}
 
       {/* ---  Search  --- */}
       <div className="event-filter-bar">
