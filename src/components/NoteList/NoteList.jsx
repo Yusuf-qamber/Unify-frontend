@@ -21,7 +21,7 @@ const NoteList = (props) => {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // --- Added search + sort state ---
+
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("date");
 
@@ -39,7 +39,6 @@ const NoteList = (props) => {
     fetchNotes();
   }, [college]);
 
-  // --- Derived array: filtered + sorted ---
   const filteredNotes = notes
     .filter(
       (note) =>
@@ -67,7 +66,7 @@ const NoteList = (props) => {
       
         </li>)}
 
-      {/* --- Added Search + Sort --- */}
+
       <div className="note-filter-bar">
         <input
           type="text"

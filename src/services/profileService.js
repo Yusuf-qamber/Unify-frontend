@@ -14,17 +14,17 @@ const getProfile = async () => {
   return res.json();
 };
 
-// UPDATE profile (username, picture) with FormData
+
 const updateProfile = async (updates) => {
   const token = localStorage.getItem("token");
 
   const formData = new FormData();
   if (updates.username) formData.append("username", updates.username);
   if (updates.picture instanceof File) {
-    // when uploading a file
+
     formData.append("picture", updates.picture);
   } else if (typeof updates.picture === "string") {
-    // if user still enters a direct URL (optional)
+   
     formData.append("picture", updates.picture);
   }
 

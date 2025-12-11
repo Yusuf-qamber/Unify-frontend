@@ -13,7 +13,7 @@ const NavBar = ({ user, handleSignOut }) => {
         <Link to="/">Unify</Link>
       </div>
 
-      {/* Hamburger toggle for small screens */}
+    
       <button
         className="navbar__toggle"
         onClick={() => setMenuOpen(!menuOpen)}

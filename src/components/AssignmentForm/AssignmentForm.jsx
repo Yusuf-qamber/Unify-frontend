@@ -24,7 +24,7 @@ const AssignmentForm = () => {
           const data = await assignmentService.show(assignmentId);
           setAssignment({
             ...data,
-            dueDate: data.dueDate.slice(0, 10) // format for input[type=date]
+            dueDate: data.dueDate.slice(0, 10) 
           });
         } catch (err) {
           console.error("Failed to fetch assignment:", err);

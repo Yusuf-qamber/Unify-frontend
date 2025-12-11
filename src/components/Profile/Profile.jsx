@@ -99,7 +99,7 @@ const Profile = ({ onSignOut, user }) => {
           <p><strong>Username:</strong> {profile.username}</p>
           <p><strong>Email:</strong> {profile.email}</p>
 
-          {/* Message Privately button */}
+         
           {userId && userId !== user?._id && (
             <button
               className="message-btn"

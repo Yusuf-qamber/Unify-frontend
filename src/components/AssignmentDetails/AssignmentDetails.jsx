@@ -25,7 +25,7 @@ const AssignmentDetails = () => {
   const handleDelete = async () => {
   if (window.confirm("Are you sure you want to delete this assignment?")) {
     try {
-      const res = await assignmentService.remove(assignmentId); // <-- use 'remove'
+      const res = await assignmentService.remove(assignmentId); 
       console.log("Delete response:", res);
       navigate("/assignments");
     } catch (err) {

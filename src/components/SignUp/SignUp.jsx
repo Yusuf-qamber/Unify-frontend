@@ -77,22 +77,21 @@ const SignUp = (props) => {
 
         {errors.general && <div className="error-box">{errors.general}</div>}
 
-        {/* <label>Username:</label> */}
+        
         <input type="text" name="username" placeholder="Username" onChange={handleChange} />
         {errors.username && <p className="field-error">{errors.username}</p>}
 
-        {/* <label>Email</label> */}
+       
         <input type="email" name="email" placeholder="Email" onChange={handleChange} />
         {errors.email && <p className="field-error">{errors.email}</p>}
 
-        {/* <label>Password:</label> */}
+        
         <input type="password" name="password" placeholder="Password" onChange={handleChange} />
         {errors.password && <p className="field-error">{errors.password}</p>}
 
-        {/* <label>Confirm Password:</label> */}
         <input type="password" name="passwordConf" placeholder="passwordConf" onChange={handleChange} />
 
-        {/* Password Checklist */}
+       
         <div className="password-rules">
           <h4>Password must include:</h4>
           <ul>

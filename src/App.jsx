@@ -17,7 +17,6 @@ import EventDetails from "./components/EventDetails/EventDetails.jsx";
 import EventForm from "./components/EventForm/EventForm.jsx";
 import Schedule from "./components/Schedule/Schedule";
 import ScheduleForm from "./components/ScheduleForm/ScheduleForm";
-import { ConfirmProvider } from "material-ui-confirm";
 import AssignmentList from "./components/AssignmentList/AssignmentList.jsx";
 import AssignmentDetails from "./components/AssignmentDetails/AssignmentDetails.jsx";
 import AssignmentForm from "./components/AssignmentForm/AssignmentForm.jsx";
@@ -41,9 +40,8 @@ const App = () => {
 
   useEffect(() => {
     if (user) {
-      // connect to backend socket server
       const newSocket = io(import.meta.env.VITE_BACK_END_SERVER_URL, {
-        query: { userId: user._id }, // send userId to identify the socket
+        query: { userId: user._id }, 
       });
 
       setSocket(newSocket);
@@ -57,15 +55,15 @@ const App = () => {
   useEffect(() => {
   if (!socket || !user?._id) return;
 
-  // Mark user online
+
   socket.emit("userOnline", user._id);
 
-  // Listen for updates
+
   socket.on("updateUserStatus", (users) => {
     setOnlineUsers(users);
   });
 
-  // Clean up
+
   return () => {
     socket.off("updateUserStatus");
   };

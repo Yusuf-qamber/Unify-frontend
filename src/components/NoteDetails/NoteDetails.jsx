@@ -1,4 +1,4 @@
-import { useParams, Link, Navigate, useNavigate,useLocation } from "react-router-dom";
+import { useParams, Link, Navigate,useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import * as noteService from "../../services/noteService.js";
 import CommentForm from "../CommentForm/CommentForm.jsx";
@@ -6,9 +6,8 @@ import "./NoteDetails.scss";
 import { FaTrash, FaPen } from "react-icons/fa";
 
 const NoteDetails = (props) => {
-    const location = useLocation(); // <-- get state from navigation
+    const location = useLocation(); 
   const cameFromProfile = location.state?.fromProfile;
-  const navigate = useNavigate();
   const { college, noteId } = useParams();
   const [note, setNote] = useState(null);
   const [loading, setLoading] = useState(true);

@@ -16,7 +16,6 @@ const GpaList = () => {
         const data = await gpaService.index();
         setGpaRecords(data);
 
-        // Calculate cumulative GPA using semesterGpa weighted by semester credits
         let totalCredits = 0;
         let totalPoints = 0;
         let totalMajorCredits = 0;

@@ -12,21 +12,21 @@ const ChatPage = ({ user, socket, onlineUsers }) => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 768);
 
-  // Detect mobile view
+
   useEffect(() => {
     const handleResize = () => setIsMobileView(window.innerWidth <= 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Preselect user from Profile.jsx button
+
   useEffect(() => {
     if (location.state?.preselectedUser) {
       setSelectedUser(location.state.preselectedUser);
     }
   }, [location.state]);
 
-  // Fetch conversations
+
   const fetchConversations = useCallback(async () => {
     try {
       const data = await chatService.getConversations();
@@ -40,7 +40,7 @@ const ChatPage = ({ user, socket, onlineUsers }) => {
     fetchConversations();
   }, [fetchConversations]);
 
-  // Socket listeners
+
   useEffect(() => {
     if (!socket || !user) return;
 
@@ -78,7 +78,7 @@ const ChatPage = ({ user, socket, onlineUsers }) => {
     };
   }, [socket, user, selectedUser]);
 
-  // Delete conversation
+ 
   const handleDeleteConversation = async (userId) => {
     try {
       const { confirmed } = await confirm({
@@ -106,7 +106,7 @@ const ChatPage = ({ user, socket, onlineUsers }) => {
 
   return (
     <div className={`chat-page ${isMobileView ? "mobile" : ""}`}>
-      {/* Sidebar */}
+     
       <div className={`sidebar-wrapper ${selectedUser && isMobileView ? "hidden" : ""}`}>
         <Sidebar
           conversations={conversations}
@@ -117,7 +117,7 @@ const ChatPage = ({ user, socket, onlineUsers }) => {
         />
       </div>
 
-      {/* Private Chat */}
+      
       <div className={`chat-wrapper ${!selectedUser && isMobileView ? "hidden" : ""}`}>
         {selectedUser ? (
           <PrivateChat

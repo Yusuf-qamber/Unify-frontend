@@ -56,7 +56,7 @@ export const searchUsers = async (query) => {
     });
     if (!res.ok) throw new Error("Failed to search users");
     const users = await res.json();
-    // Normalize so Sidebar can use same shape as conversations
+    
     return users.map((u) => ({ user: u, lastMessage: null, lastMessageAt: null }));
   } catch (err) {
     console.error("chatService.searchUsers error:", err);

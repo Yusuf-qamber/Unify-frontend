@@ -148,7 +148,7 @@
 }
 
 
-/* --- Filter Bar --- */
+
 .note-filter-bar,
 .event-filter-bar {
   display: flex;
@@ -162,7 +162,7 @@
   align-items: center;
 }
 
-/* --- Search Input --- */
+
 .note-search-input,
 .event-search-input {
   flex: 1;
@@ -179,7 +179,7 @@
   }
 }
 
-/* --- Sort Dropdown --- */
+
 .note-sort-select,
 .event-sort-select {
   flex: 0 0 150px;
@@ -197,7 +197,7 @@
   }
 }
 
-/* --- Responsive --- */
+
 @media (max-width: 480px) {
   .note-filter-bar,
   .event-filter-bar {

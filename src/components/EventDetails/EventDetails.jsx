@@ -2,7 +2,6 @@ import {
   useParams,
   Link,
   Navigate,
-  useNavigate,
   useLocation,
 } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -13,9 +12,8 @@ import { FaTrash, FaPen } from "react-icons/fa";
 import "./EventDetails.scss";
 
 const EventDetails = (props) => {
-  const location = useLocation(); // <-- get state from navigation
+  const location = useLocation(); 
   const cameFromProfile = location.state?.fromProfile;
-  const navigate = useNavigate();
   const { college, eventId } = useParams();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
