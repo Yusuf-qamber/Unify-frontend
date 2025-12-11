@@ -13,7 +13,7 @@ const EventList = (props) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // --- search + sort state ---
+
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("date");
 
@@ -31,7 +31,7 @@ const EventList = (props) => {
     fetchEvents();
   }, [college]);
 
-  // --- filtered + sorted events ---
+
   const filteredEvents = events
     .filter(
       (event) =>
@@ -39,7 +39,7 @@ const EventList = (props) => {
         event.owner?.username.toLowerCase().includes(searchTerm.toLowerCase())
     )
 useEffect(() => {
-  // wait a tick to allow the DOM to update
+
   const timer = setTimeout(() => {
     window.dispatchEvent(new Event("resize"));
   }, 50);
@@ -61,7 +61,7 @@ useEffect(() => {
           <Link to={`/sign-in`}>Add an Event</Link>
         </div>)}
 
-      {/* ---  Search  --- */}
+      
       <div className="event-filter-bar">
         <input
           type="text"
@@ -86,7 +86,7 @@ useEffect(() => {
                   {new Date(event.createdAt).toLocaleDateString()}
                 </span>
 
-                {/* --- MapBox --- */}
+                
                 <div className="event-map">
                   <MapBox
                     coordinates={event.coordinates || { lat: 26.2235, lng: 50.5876 }}

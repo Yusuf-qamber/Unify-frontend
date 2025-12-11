@@ -9,7 +9,6 @@ const CollegeChat = ({ user }) => {
   const [text, setText] = useState("");
   const chatEndRef = useRef(null);
 
-  // Fetch initial college messages from backend
   useEffect(() => {
     if (!user || !college) return;
 
@@ -30,7 +29,6 @@ const CollegeChat = ({ user }) => {
     fetchMessages();
   }, [user, college]);
 
-  // Join college room and listen for new messages
   useEffect(() => {
     if (!socket || !college) return;
 
@@ -44,7 +42,7 @@ const CollegeChat = ({ user }) => {
     return () => socket.off("receiveCollegeMessage", handleReceive);
   }, [college]);
 
-  // Auto-scroll
+
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);

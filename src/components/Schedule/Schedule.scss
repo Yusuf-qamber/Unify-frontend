@@ -1,4 +1,4 @@
-// Variables
+
 $primary: #3F72AF;
 $primary-dark: #2a4f7d;
 $secondary: #112D4E;
@@ -7,7 +7,6 @@ $border: #ddd;
 $shadow: rgba(0, 0, 0, 0.1);
 $radius: 6px;
 
-// Shared button
 .button {
   padding: 0.6rem 1rem;
   border-radius: $radius;
@@ -26,7 +25,7 @@ $radius: 6px;
   }
 }
 
-// Shared card
+
 .card {
   background: #fff;
   border: 1px solid $border;
@@ -36,7 +35,7 @@ $radius: 6px;
   box-shadow: 0 2px 4px $shadow;
 }
 
-// Schedule container
+
 .schedule-container {
   padding: 2rem;
   max-width: 1200px;

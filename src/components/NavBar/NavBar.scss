@@ -11,6 +11,7 @@ body {
   padding-top: 80px;
 }
 
+
 .navbar {
   position: fixed;
   top: 0;
@@ -39,16 +40,16 @@ body {
   background: linear-gradient(135deg, #667eea, #764ba2);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
+  cursor: pointer;
   text-decoration: none;
   transition: all 0.3s ease;
-  cursor: pointer;
 }
 
 .navbar__logo:hover {
   transform: scale(1.05);
   filter: brightness(1.2);
 }
+
 
 .navbar__menu {
   display: flex;
@@ -97,6 +98,7 @@ body {
   box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
 }
 
+
 .navbar__welcome {
   color: #6366f1;
   font-weight: 600;
@@ -115,6 +117,7 @@ body {
     box-shadow: 0 0 0 10px rgba(102, 126, 234, 0);
   }
 }
+
 
 .sign-out-btn {
   background: linear-gradient(135deg, #ef4444, #dc2626) !important;
@@ -140,6 +143,7 @@ body {
 .sign-up-btn::before {
   background: linear-gradient(135deg, #5a67d8, #6b46c1) !important;
 }
+
 
 .content {
   padding: 4rem 2rem;
@@ -171,6 +175,7 @@ body {
   }
 }
 
+
 @media (max-width: 768px) {
   .navbar {
     padding: 1rem;
@@ -197,108 +202,22 @@ body {
 @media (max-width: 480px) {
   .navbar__menu {
     flex-direction: column;
-    position: static;
     background: transparent;
-    padding: 0.5rem 0;
     gap: 0.75rem;
-    transform: none;
-    opacity: 1;
-    visibility: visible;
+    padding: 0.5rem 0;
   }
 
   .navbar__menu a {
-    display: block;
-    text-align: center;
-    width: 100%;
-  }
-}
-/* Existing navbar styles remain unchanged */
-
-/* Tablet and mobile adjustments */
-@media (max-width: 1024px) {
-  .navbar {
-    padding: 1rem 1.5rem;
-  }
-
-  .navbar__menu {
-    display: none; /* hide by default on tablets and below */
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    background: rgba(255, 255, 255, 0.95);
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    z-index: 999;
-  }
-
-  .navbar__menu.show {
-    display: flex;
-  }
-
-  .navbar__menu a {
-    padding: 0.75rem 1.5rem;
     width: 100%;
     text-align: center;
   }
 
-  /* Hamburger button */
-  .navbar__toggle {
-    display: block;
-    cursor: pointer;
-    font-size: 1.5rem;
-    color: #374151;
-    background: none;
-    border: none;
-    z-index: 1001;
-  }
-}
-
-/* Mobile devices below 480px */
-@media (max-width: 480px) {
   .navbar__logo {
     font-size: 1.4rem;
   }
-
-  .navbar__toggle {
-    font-size: 1.6rem;
-  }
-}
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 1000;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-.navbar__logo a {
-  font-size: 1.75rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-decoration: none;
-}
 
-/* Default menu */
-.navbar__menu {
-  display: flex;
-  list-style: none;
-  gap: 2rem;
-  align-items: center;
-}
-
-/* Hamburger toggle hidden on desktop */
 .navbar__toggle {
   display: none;
   background: none;
@@ -307,7 +226,6 @@ body {
   cursor: pointer;
 }
 
-/* Responsive adjustments */
 @media (max-width: 1024px) {
   .navbar__menu {
     display: none;
@@ -333,9 +251,9 @@ body {
   }
 
   .navbar__menu a {
-    padding: 0.75rem 1rem;
-    text-align: center;
     width: 100%;
+    text-align: center;
+    padding: 0.75rem 1rem;
   }
 
   .navbar__welcome {
@@ -344,10 +262,6 @@ body {
 }
 
 @media (max-width: 480px) {
-  .navbar__logo a {
-    font-size: 1.4rem;
-  }
-
   .navbar__toggle {
     font-size: 1.6rem;
   }

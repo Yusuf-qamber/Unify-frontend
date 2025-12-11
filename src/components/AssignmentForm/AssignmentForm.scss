@@ -68,12 +68,12 @@
         background: linear-gradient(135deg, #3498db, #e74c3c);
         font-weight: bold;
         cursor: pointer;
-        color: #000; /* make selected text black */
+        color: #000; 
         border-radius: 12px;
         padding: 0.5rem 1rem;
 
         option {
-          color: #000; /* dropdown text black */
+          color: #000; 
         }
       }
 
@@ -110,7 +110,7 @@
     }
   }
 
-  /* Floating fun icons */
+ 
   &::before,
   &::after {
     content: "📚⚡⏰";
@@ -133,7 +133,7 @@
   }
 }
 
-/* Floating icons animation */
+
 @keyframes floatIcons {
   0% { transform: translateY(0) rotate(0deg); }
   50% { transform: translateY(-15px) rotate(15deg); }

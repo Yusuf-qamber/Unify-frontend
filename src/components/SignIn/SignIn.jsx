@@ -19,12 +19,12 @@ const SignIn = (props) => {
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
-    setError(""); // reset error before submitting
+    setError(""); 
 
     try {
       const user = await authService.signIn(formData);
       if (user) {
-        props.setUser(user); // optional global user state
+        props.setUser(user); 
         navigate("/");
       }
     } catch (err) {

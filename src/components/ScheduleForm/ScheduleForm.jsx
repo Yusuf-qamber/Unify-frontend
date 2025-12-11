@@ -6,7 +6,7 @@ import "./ScheduleForm.scss";
 
 const daysOptions = ["U", "M", "T", "W", "H"];
 
-// Helper to check if two time ranges overlap
+
 const isTimeOverlap = (start1, end1, start2, end2) => {
   return start1 < end2 && start2 < end1;
 };
@@ -72,7 +72,6 @@ const handleChange = (e) => {
 
   let updatedValue = value;
 
-  // Force courseCode to uppercase
   if (name === "courseCode") {
     updatedValue = value.toUpperCase();
   }

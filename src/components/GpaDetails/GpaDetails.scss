@@ -1,4 +1,3 @@
-// Variables (consistent with GpaList.scss)
 $primary-color: #4361ee;
 $secondary-color: #3a0ca3;
 $success-color: #4cc9f0;
@@ -14,7 +13,7 @@ $shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.15);
 $border-radius: 12px;
 $transition: all 0.3s ease;
 
-// Mixins
+
 @mixin flex-center {
   display: flex;
   align-items: center;
@@ -29,7 +28,7 @@ $transition: all 0.3s ease;
   border: 1px solid $border-color;
 }
 
-// Container Styles
+
 .gpa-details-container {
   max-width: 1000px;
   margin: 0 auto;
@@ -42,7 +41,7 @@ $transition: all 0.3s ease;
   }
 }
 
-// Header Styles
+
 .gpa-details-header {
   @include card-style;
   padding: 2rem;
@@ -122,7 +121,7 @@ $transition: all 0.3s ease;
   }
 }
 
-// Courses Section
+
 .courses-section {
   margin-bottom: 2rem;
 }
@@ -147,7 +146,7 @@ $transition: all 0.3s ease;
   }
 }
 
-// Course Card Styles
+
 .course-card {
   @include card-style;
   padding: 1.5rem;
@@ -212,7 +211,7 @@ $transition: all 0.3s ease;
   border-radius: 20px;
 }
 
-// Actions Styles
+
 .gpa-actions {
   display: flex;
   gap: 1rem;
@@ -274,7 +273,7 @@ $transition: all 0.3s ease;
   }
 }
 
-// Message Styles
+
 .loading-msg,
 .not-found-msg {
   text-align: center;
@@ -298,7 +297,7 @@ $transition: all 0.3s ease;
   color: $warning-color;
 }
 
-// Loading Animation
+
 @keyframes pulse {
   0% {
     opacity: 1;
@@ -311,7 +310,7 @@ $transition: all 0.3s ease;
   }
 }
 
-// Empty State
+
 .courses-grid:empty::after {
   content: "No courses found for this semester.";
   text-align: center;
@@ -321,7 +320,7 @@ $transition: all 0.3s ease;
   grid-column: 1 / -1;
 }
 
-// Responsive adjustments
+
 @media (max-width: 480px) {
   .gpa-details-header {
     text-align: center;
